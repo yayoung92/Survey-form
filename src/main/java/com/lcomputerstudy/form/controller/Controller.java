@@ -8,4 +8,9 @@ public class Controller {
 	public String home() {
 		return "/form";
 	}
+	@RequestMapping("/sum")
+	public String sum() {
+		System.out.println();
+		return "/form";
+	}
 }

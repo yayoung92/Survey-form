@@ -51,13 +51,14 @@
 	text-dexoration: underline;
 	border: none;
 	text-align: center;
+	font-weight: bold;
 }
 </style>
 <body>
 	<div class="wrap">
 		<div class="form" >
 			<h1>설문조사</h1>
-			<input type="text" placeholder="설문지 설명" class="sur">
+			<input type="text" placeholder="설문지 설명" class="sur" name="survey">
 			<hr class="my-4">
 			<p class="lead">
 			<button type="button" class="addQuestion">질문 시작하기</button>
@@ -69,10 +70,9 @@
 					<option value="none">== 선택 ==</option>
 					<option value="1">주관식</option>
 					<option value="2">객관식</option>
-					<option value="3">단답형</option>
-					<option value="4">장문형</option>
+					<option value="3">장문형</option>
 				</select>
-				<input type="text" name="q_anwser" placeholder="답변"><br>
+	<!--  			<input type="text" name="q_anwser" placeholder="답변"><br>-->
 				<hr>
 				<button type="button" class="addQuestion">질문 추가</button>
 				
@@ -83,7 +83,7 @@
 		</div>
 	</div>
 	<div class="button-container">
-		<a class="custom-button" type="button" href="/">제출하기</a>
+		<a id="btn_survey" class="custom-button" type="button">제출하기</a>
 	</div>
 	
 <script>
@@ -94,44 +94,98 @@ $(document).on('click', '.addQuestion', function() {
     var newFormBox = $('<div class="form-box"></div>');
     var newQuestion = $('<div class="question"></div>');
     var titleInput = $('<input class="input" type="text" name="q_title" placeholder="질문">');
-    var selectBox = $('<select clsee="QuestionType" name="q_type"><option value="none">== 선택 ==</option><option value="1">주관식</option><option value="2">객관식</option><option value="3">단답형</option><option value="4">장문형</option></select>');
-    var answerInput = $('<input type="text" name="q_answer" placeholder="답변"><br><hr>');
-    var addButton = $('<button type="button" class="addQuestion">질문 추가</button>');
-    var addButtonn = $('<button type="button" class="delete">취소</button>');
+    var selectBox = $('<select clsee="QuestionType" name="q_type"><option value="none">== 선택 ==</option><option value="1">주관식</option><option value="2">객관식</option><option value="3">단답형</select>');
+    var addButton = $('<hr><button type="button" class="addQuestion">질문 추가</button>');
+    var deleteButton = $('<button type="button" class="delete">취소</button>');
 
     newQuestion.append(titleInput);
     newQuestion.append(selectBox);
-    newQuestion.append(answerInput);
     newQuestion.append(addButton);
-    newQuestion.append(addButtonn);
+    newQuestion.append(deleteButton);
     newFormBox.append(newQuestion);
 
     $('.wrap').append(newFormBox);
+    selectBox.on('change', function() {
+    	while (true) {
+            if ($(this).next().next().hasClass("form2") == true || $(this).next().next().hasClass("addExample") == true) {
+                $(this).next().next().remove();
+            } else {
+                break;
+            }
+        }
+        
+    	if ($(this).val() === '1') {
+            $(this).next().after("<div class='form2'><input type='text' class='example' name='q_answer' placeholder='답변'></div>");
+        }
+        if ($(this).val() === '2') {
+            $(this).next().after("<div class='form2'><input type='checkbox'><input type='text' class='example' name='q_ar[]' placeholder='옵션1'><br><input type='checkbox'><input type='text' class='example' name='q_ar[]' placeholder='옵션2'><br></div><button type='button' class='addExample'>보기 추가하기</button>");
+        }
+        if ($(this).val() === '3') {
+            $(this).next().after("<div class='form2'><input type='text' placeholder='답변' class='example' style='width: 500px;' name='q_answer[]'></div>");
+        }
+    });
     selectBox.trigger('change');
 
 });
 $(document).on('change', '.QuestionType', function() {
-    while (true) {
+	while (true) {
         if ($(this).next().next().hasClass("form2") == true || $(this).next().next().hasClass("addExample") == true) {
             $(this).next().next().remove();
         } else {
             break;
         }
     }
-    if ($(this).val() === '2') {
-        $(this).next().after("<div class='form2'><input type='text' placeholder='보기' class='example'> <button type='button' class='deleteExample'>보기 삭제</button></div><button type='button' class='addExample'>보기 추가하기</button>");
-    } else {
-        $(this).parent().find('.form2').remove();
+    
+	if ($(this).val() === '1') {
+        $(this).next().after("<div class='form2'><input type='text' class='example' name='q_answer' placeholder='답변'></div>");
     }
+    if ($(this).val() === '2') {
+        $(this).next().after("<div class='form2'><input type='checkbox'><input tpye='text' class='example' name='q_ar[]' placeholder='옵션1'><br><input type='checkbox'><input type='text' class='example' name='q_ar[]' placeholder='옵션2'><br></div><button type='button' class='addExample'>보기 추가하기</button>");
+    }
+    if ($(this).val() === '3') {
+        $(this).next().after("<div class='form2'><input type='text' placeholder='답변' class='example' style='width: 500px;' name='q_answer'></div>");
+    }
+
 });
 
 $(document).on('click', '.addExample', function () {
-    $(this).prev().prev().children().last().after("<input type='text' placeholder='보기' class='example'> <button type='button' class='deleteExample'>보기 삭제</button>");
+	var optionInput = $('<div class="form2"><input type="checkbox"><input type="text" placeholder="옵션 추가" class="example" name="q_ar[]">');
+    var deleteButton = $('<button type="button" class="deleteExample">보기 삭제</button><br>');
+    
+    $(this).before(optionInput);
+    $(this).before(deleteButton);
 });
 
 $(document).on('click', '.deleteExample', function () {
-    $(this).prev().remove(); // Remove the input field
-    $(this).remove(); // Remove the delete button
+    $(this).prev().remove();
+    $(this).remove()
+});
+$(document).on('click', '#btn_survey', function () {
+    let questions = [];
+    let name = $(this).parent().prev().find('input[name="survey"]').val();
+    let itmes = [];
+    
+    $('.question').each(function () {
+        let q_title = $(this).find('input[name="q_title"]').val();
+        let q_type = $(this).find('select[name="q_type"]').val();
+        let q_items = [];
+		
+		
+        if(q_type === '2') {
+        	$(this).find('input[name="q_ar[]"]').each(function() {
+				q_items.push($(this).val());
+        	});
+        }
+        
+        let question = {
+            title: q_title,
+            type: q_type,
+            items: q_items
+        }
+        questions.push(question);
+    });
+
+	console.log(name, questions);
 });
 </script>
 </body>
