@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<meta name="_csrf" content="${_csrf.token }">
 </head>
 <style>
 .form {
@@ -83,7 +84,7 @@
 		</div>
 	</div>
 	<div class="button-container">
-		<a id="btn_survey" class="custom-button" type="button">제출하기</a>
+		<a id="btn_survey" class="custom-button" type="button">설문지 만들기</a>
 	</div>
 	
 <script>
@@ -94,7 +95,7 @@ $(document).on('click', '.addQuestion', function() {
     var newFormBox = $('<div class="form-box"></div>');
     var newQuestion = $('<div class="question"></div>');
     var titleInput = $('<input class="input" type="text" name="q_title" placeholder="질문">');
-    var selectBox = $('<select clsee="QuestionType" name="q_type"><option value="none">== 선택 ==</option><option value="1">주관식</option><option value="2">객관식</option><option value="3">단답형</select>');
+    var selectBox = $('<select clsee="QuestionType" name="q_type"><option value="none">== 선택 ==</option><option value="1">주관식</option><option value="2">객관식</option><option value="3">장문형</select>');
     var addButton = $('<hr><button type="button" class="addQuestion">질문 추가</button>');
     var deleteButton = $('<button type="button" class="delete">취소</button>');
 
@@ -121,7 +122,7 @@ $(document).on('click', '.addQuestion', function() {
             $(this).next().after("<div class='form2'><input type='checkbox'><input type='text' class='example' name='q_ar[]' placeholder='옵션1'><br><input type='checkbox'><input type='text' class='example' name='q_ar[]' placeholder='옵션2'><br></div><button type='button' class='addExample'>보기 추가하기</button>");
         }
         if ($(this).val() === '3') {
-            $(this).next().after("<div class='form2'><input type='text' placeholder='답변' class='example' style='width: 500px;' name='q_answer[]'></div>");
+            $(this).next().after("<div class='form2'><textarea placeholder='답변' class='example' style='width: 500px;' name='q_answer[]'></textarea></div>");
         }
     });
     selectBox.trigger('change');
@@ -143,7 +144,7 @@ $(document).on('change', '.QuestionType', function() {
         $(this).next().after("<div class='form2'><input type='checkbox'><input tpye='text' class='example' name='q_ar[]' placeholder='옵션1'><br><input type='checkbox'><input type='text' class='example' name='q_ar[]' placeholder='옵션2'><br></div><button type='button' class='addExample'>보기 추가하기</button>");
     }
     if ($(this).val() === '3') {
-        $(this).next().after("<div class='form2'><input type='text' placeholder='답변' class='example' style='width: 500px;' name='q_answer'></div>");
+        $(this).next().after("<div class='form2'><textarea placeholder='답변' class='example' style='width: 500px;' name='q_answer'></textarea></div>");
     }
 
 });
@@ -163,29 +164,53 @@ $(document).on('click', '.deleteExample', function () {
 $(document).on('click', '#btn_survey', function () {
     let questions = [];
     let name = $(this).parent().prev().find('input[name="survey"]').val();
-    let itmes = [];
+    let title = $(this).parent().prev().find('input[name="q_title"]').val();
+    let type = $(this).parent().prev().find('select[name="q_type"]').val();
+    let csrfToken = $("meta[name='_csrf']").attr("content");
     
     $('.question').each(function () {
         let q_title = $(this).find('input[name="q_title"]').val();
         let q_type = $(this).find('select[name="q_type"]').val();
         let q_items = [];
 		
-		
         if(q_type === '2') {
         	$(this).find('input[name="q_ar[]"]').each(function() {
-				q_items.push($(this).val());
+
+				let option = {
+			        OPTION: $(this).val()
+			    };
+	
+				q_items.push(option);
         	});
         }
         
         let question = {
             title: q_title,
-            type: q_type,
+            type: Number(q_type),
             items: q_items
         }
         questions.push(question);
     });
 
 	console.log(name, questions);
+	
+	$.ajax({
+		method: "POST",
+		url: "aj-insert",
+		headers: {
+			"X-CSRF-TOKEN": csrfToken
+		},
+		contentType: "application/json",
+		data: JSON.stringify({
+			sTitle: name,
+		    qQueation: title,
+		    qType: type
+		}),
+	})
+	.done(function(msg) {
+		$('#surveyList').html(msg);
+	});
+
 });
 </script>
 </body>

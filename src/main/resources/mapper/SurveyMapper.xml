@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcomputerstudy.form.mapper.SurveyMapper">
+	<select id="selectSurvey" resultType="Survey">
+		SELECT		s_idx  as sIdx,
+					s_title as sTitle,
+					s_datetime as sDateTime
+		FROM		y_survey
+	</select>
+	
+	<insert id="insertSurvey" parameterType="Survey">
+		INSERT INTO y_survey(
+			s_idx,
+			s_title, 
+			s_datetime
+		)
+        VALUES (
+        	#{sIdx},
+        	#{sTitle}, 
+        	now()
+        )
+        <selectKey keyProperty="sIdx" resultType="Integer" order="AFTER">
+        	SELECT	last_insert_id()
+        </selectKey>
+	</insert>
+	<update id="updateSIdx" parameterType="Integer">
+		UPDATE	y_question
+		SET		s_idx = #{sIdx}
+		WHERE	s_idx = #{sIdx}
+	</update> 
+	<insert id="insertQuestion" parameterType="Question">
+		INSERT INTO y_question(
+			q_idx, 
+			q_type, 
+			q_question, 
+			s_idx, 
+			q_option
+		)
+   		VALUES (
+        	#{qIdx}, 
+        	#{qType}, 
+        	#{qQuestion}, 
+        	#{sIdx}, 
+        	#{qOption}
+        )
+	</insert>
+</mapper>
+
