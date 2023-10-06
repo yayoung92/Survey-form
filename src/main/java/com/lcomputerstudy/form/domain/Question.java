@@ -5,14 +5,7 @@ public class Question {
 	private String qType;
 	private String qQuestion;
 	private int sIdx;
-	private String qOption;
 	
-	public String getqOption() {
-		return qOption;
-	}
-	public void setqOption(String qOption) {
-		this.qOption = qOption;
-	}
 	public int getqIdx() {
 		return qIdx;
 	}

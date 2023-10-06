@@ -9,16 +9,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Hello World</h1>
+	<h1>설문조사 목록</h1>
       <table>
       	<tr>
       		<td>id</td>
-      		<td>data</td>
+      		<td>title</td>
+      		<td>datetime</td>
       	</tr>
       	<c:forEach var="list" items="${list }">
 	      	<tr>
 	      		<td>${list.sIdx }</td>
-	      		<td>${list.sData }</td>
+	      		<td>${list.sTitle}</td>
+	      		<td>${list.sDateTime}</td>
 	      	</tr>
       	</c:forEach>
       </table>

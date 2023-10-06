@@ -33,15 +33,33 @@
 			q_idx, 
 			q_type, 
 			q_question, 
-			s_idx, 
-			q_option
+			s_idx
 		)
    		VALUES (
         	#{qIdx}, 
         	#{qType}, 
         	#{qQuestion}, 
-        	#{sIdx}, 
-        	#{qOption}
+        	#{sIdx}
+        )
+        <selectKey keyProperty="qIdx" resultType="Integer" order="AFTER">
+        	SELECT	last_inser_id()
+        </selectKey>
+	</insert>
+	<update id="updateQIdx" parameterType="Integer">
+		UPDATE	y_reulstoption
+		SET		q_idx = #{qIdx}
+		WHERE	q_idx = #{qIdx}
+	</update> 
+	<insert id="insertOption" parameterType="Options">
+		INSERT INTO y_resultoption(
+			r_id,
+			q_idx,
+			r_option
+		)
+		VALUES (
+			#{rId},
+        	#{qIdx}, 
+        	#{rOption}
         )
 	</insert>
 </mapper>

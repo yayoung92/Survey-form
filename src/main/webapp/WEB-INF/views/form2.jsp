@@ -164,9 +164,6 @@ $(document).on('click', '.deleteExample', function () {
 $(document).on('click', '#btn_survey', function () {
     let questions = [];
     let name = $(this).parent().prev().find('input[name="survey"]').val();
-    let title = $(this).parent().prev().find('input[name="q_title"]').val();
-    let type = $(this).parent().prev().find('select[name="q_type"]').val();
- //   let items = $(this).parent().prev().find('input[name="q_ar[]"]').val();
     let csrfToken = $("meta[name='_csrf']").attr("content");
 
     $('.question').each(function () {
@@ -177,47 +174,38 @@ $(document).on('click', '#btn_survey', function () {
         if(q_type === '2') {
         	$(this).find('input[name="q_ar[]"]').each(function() {
 
-				
 				let option = {
-					for(var i=0; i<option.length; i++) {
-						OPTION: $(this).val()
-					}
-			    
+					OPTION: $(this).val()
 			    };
-	
 				q_items.push(option);
         	});
         }
         
- //       let question = {
- //          title: q_title,
- //           type: Number(q_type),
- //          items: q_items
- //       }
- //       questions.push(question);
-           
+    //    let question = {
+     //           title: q_title,
+      //          type: Number(q_type),
+       //         items: q_items
+        //    }
+         //   questions.push(question);
+
+        $.ajax({
+    		method: "POST",
+    		url: "aj-insert",
+    		headers: {
+    			"X-CSRF-TOKEN": csrfToken
+    		},
+    		contentType: "application/json",
+    		data: JSON.stringify({
+    			sTitle: name,	//설문지 제목
+    		    title: q_title	//질문
+    		}),
+    	})
+    	.done(function(msg) {
+    		$('#surveyList').html(msg);
+    	});
     });
-
-	console.log(name, questions);
-	
-	$.ajax({
-		method: "POST",
-		url: "aj-insert",
-		headers: {
-			"X-CSRF-TOKEN": csrfToken
-		},
-		contentType: "application/json",
-		data: JSON.stringify({
-			sTitle: name,
-		    qQueation: title,
-		    qType: type,
-		    qOption: []
-		}),
-	})
-	.done(function(msg) {
-		$('#surveyList').html(msg);
-	});
-
+    
+   
 });
 </script>
 </body>
