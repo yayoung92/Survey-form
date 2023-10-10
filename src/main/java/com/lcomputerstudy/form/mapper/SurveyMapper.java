@@ -1,6 +1,7 @@
 package com.lcomputerstudy.form.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,13 +15,17 @@ public interface SurveyMapper {
 	
 	public void insertSurvey(Survey survey);
 	
-	public void insert(Question[] question);
+	public void insert(Question question);
 	
 	public void insertQuestion(Question question);
 	
 	public void insertOption(Options options);
 	
-	public void updateSIdx(int sIdx);
+	public void getOptionqIdx(Options options);
 	
-	public void updateQIdx(int qIdx);
+	public void getQuestion(Survey survey);
+	
+	public void insertQuestionData(int sIdx, List<Map<String, Object>> qList);
+	
+	public void insertOptionData(int sIdx, List<Map<String, Object>> oList);
 }

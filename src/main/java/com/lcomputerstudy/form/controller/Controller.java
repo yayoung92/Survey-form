@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
 import com.lcomputerstudy.form.domain.Survey;
 import com.lcomputerstudy.form.service.SurveyService;
@@ -30,43 +31,42 @@ public class Controller {
 	}
 	
 	@RequestMapping("/aj-insert")
-	public String ins(@RequestBody Map<String, Object> pay, Survey survey, Question question) {
+	public String ins(@RequestBody Map<String, Object> pay, Survey survey, Question question, Options options) {
 		String name = (String) pay.get("sTitle");
-		String title = (String) pay.get("title");
-	//	String[] quet = (String[]) pay.get("questions");
-	//	String q = (String) pay.get("qQueation");
-	//	String t = (String) pay.get("qType");
-	//	long[] list = (long[]) pay.get("qOption");
-
-		System.out.println(name.toString());
-		System.out.println(title.toString());
-	//	System.out.println(Arrays.toString(quet));
-	//	System.out.println(q.toString());
-	//	System.out.println(t.toString());
-	//	System.out.println(Arrays.toString(list));
+		List<Map<String, Object>> qList = (List<Map<String, Object>>) pay.get("qQuestions"); 
+		List<Map<String, Object>> oList = (List<Map<String, Object>>) pay.get("oOptions");
 		
-		survey.setsTitle(title);
+		survey.setsTitle(name);
 		surveyservice.insertSurvey(survey);
 		
 		int sIdx = survey.getsIdx();
-		surveyservice.updateQIdx(sIdx);
 		
-		question.setqQuestion(title);
-		surveyservice.insertQuestion(question);
-	/*	int sIdx = survey.getsIdx();
-		surveyservice.updateSIdx(sIdx);
-		
-		for(Question quest : question) {
-			
-			if(quest != null) {
-				quest.setsIdx(sIdx); 
-				quest.setqQuestion(q);
-				quest.setqType(t);
-				quest.setqOption(list);
-	            surveyservice.insert(question);;
-			} 
-		}	 */
+		for (Map<String, Object> qData : qList) {
+	        String qTitle = (String) qData.get("title");
+	        int qType = (int) qData.get("type");
 
-		return "/form2";
+	        question.setqQuestion(qTitle);
+	        question.setqType(qType);
+	        question.setsIdx(sIdx);	        
+	        surveyservice.insertQuestion(question);
+
+		}
+		surveyservice.getQuestion(survey);
+		if(question.getqType() == 2) {
+			
+			for (Map<String, Object> optionData : oList) {
+                List<String> optionTexts = (List<String>) optionData.get("option");
+                System.out.println(optionTexts.toString());
+                
+                for (String optionText : optionTexts) {
+                    options.setoOption(optionText);
+                    options.setsIdx(sIdx);
+                    surveyservice.insertOption(options); 
+                    
+                }
+            }
+        }
+		surveyservice.getOptionqIdx(options);
+		return "/index";
 	}
 }

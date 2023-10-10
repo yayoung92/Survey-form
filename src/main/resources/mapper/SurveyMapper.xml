@@ -4,7 +4,8 @@
 	<select id="selectSurvey" resultType="Survey">
 		SELECT		s_idx  as sIdx,
 					s_title as sTitle,
-					s_datetime as sDateTime
+					s_datetime as sDateTime,
+					q_count as qCount
 		FROM		y_survey
 	</select>
 	
@@ -23,11 +24,7 @@
         	SELECT	last_insert_id()
         </selectKey>
 	</insert>
-	<update id="updateSIdx" parameterType="Integer">
-		UPDATE	y_question
-		SET		s_idx = #{sIdx}
-		WHERE	s_idx = #{sIdx}
-	</update> 
+
 	<insert id="insertQuestion" parameterType="Question">
 		INSERT INTO y_question(
 			q_idx, 
@@ -41,26 +38,47 @@
         	#{qQuestion}, 
         	#{sIdx}
         )
-        <selectKey keyProperty="qIdx" resultType="Integer" order="AFTER">
-        	SELECT	last_inser_id()
-        </selectKey>
+
 	</insert>
-	<update id="updateQIdx" parameterType="Integer">
-		UPDATE	y_reulstoption
-		SET		q_idx = #{qIdx}
-		WHERE	q_idx = #{qIdx}
-	</update> 
+
 	<insert id="insertOption" parameterType="Options">
-		INSERT INTO y_resultoption(
-			r_id,
+		INSERT INTO y_option(
+			o_idx,
 			q_idx,
-			r_option
+			o_option,
+			s_idx
 		)
 		VALUES (
-			#{rId},
+			#{oIdx},
         	#{qIdx}, 
-        	#{rOption}
+        	#{oOption},
+        	#{sIdx}
         )
 	</insert>
+	
+	<update id="getOptionqIdx" parameterType="Options">
+		UPDATE	y_option
+		SET		q_idx = (
+			SELECT	q_idx
+			FROM	y_question
+			WHERE	q_type = 2 AND s_idx = #{sIdx}
+		)
+		WHERE s_idx = #{sIdx}
+	    AND EXISTS (
+	        SELECT 1
+	        FROM y_question
+	        WHERE q_type = 2 AND s_idx = #{sIdx}
+	    )
+	</update>
+	
+	<update id="getQuestion">
+		UPDATE	y_survey
+		SET	q_count = (
+			SELECT	COUNT(*) as count
+			FROM	y_question
+			WHERE	s_idx = #{sIdx}
+		)
+		WHERE s_idx = #{sIdx}
+	</update>
 </mapper>
 

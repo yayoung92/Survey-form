@@ -1,6 +1,7 @@
 package com.lcomputerstudy.form.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
@@ -11,13 +12,18 @@ public interface SurveyService {
 	
 	public void insertSurvey(Survey survey);
 	
-	public void insert(Question[] questions);
+	public void insert(Question questions);
 	
 	public void insertQuestion(Question question);
 	
 	public void insertOption(Options options);
 	
-	public void updateSIdx(int sIdx);
+	public void getOptionqIdx(Options options);
 	
-	public void updateQIdx(int qIdx);
+	public void getQuestion(Survey survey);
+	
+	public void insertQuestionData(int sIdx, List<Map<String, Object>> qList);
+	
+	public void insertOptionData(int sIdx, List<Map<String, Object>> oList);
+
 }

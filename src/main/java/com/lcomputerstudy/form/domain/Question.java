@@ -2,7 +2,7 @@ package com.lcomputerstudy.form.domain;
 
 public class Question {
 	private int qIdx;
-	private String qType;
+	private int qType;
 	private String qQuestion;
 	private int sIdx;
 	
@@ -12,10 +12,10 @@ public class Question {
 	public void setqIdx(int qIdx) {
 		this.qIdx = qIdx;
 	}
-	public String getqType() {
+	public int getqType() {
 		return qType;
 	}
-	public void setqType(String qType) {
+	public void setqType(int qType) {
 		this.qType = qType;
 	}
 	public String getqQuestion() {

@@ -161,10 +161,11 @@ $(document).on('click', '.deleteExample', function () {
     $(this).prev().remove();
     $(this).remove()
 });
-$(document).on('click', '#btn_survey', function () {
-    let questions = [];
+$(document).on('click', '#btn_survey', function () { 
     let name = $(this).parent().prev().find('input[name="survey"]').val();
     let csrfToken = $("meta[name='_csrf']").attr("content");
+    let questions = [];
+    let items = [];
 
     $('.question').each(function () {
         let q_title = $(this).find('input[name="q_title"]').val();
@@ -172,40 +173,36 @@ $(document).on('click', '#btn_survey', function () {
         let q_items = [];
 		
         if(q_type === '2') {
-        	$(this).find('input[name="q_ar[]"]').each(function() {
-
-				let option = {
-					OPTION: $(this).val()
-			    };
-				q_items.push(option);
-        	});
+        	$(this).find('input[name="q_ar[]"]').each(function () {
+                q_items.push($(this).val());
+            });
         }
         
-    //    let question = {
-     //           title: q_title,
-      //          type: Number(q_type),
-       //         items: q_items
-        //    }
-         //   questions.push(question);
+        questions.push({
+            title: q_title,
+            type: Number(q_type)
+        });
 
-        $.ajax({
-    		method: "POST",
-    		url: "aj-insert",
-    		headers: {
-    			"X-CSRF-TOKEN": csrfToken
-    		},
-    		contentType: "application/json",
-    		data: JSON.stringify({
-    			sTitle: name,	//설문지 제목
-    		    title: q_title	//질문
-    		}),
-    	})
-    	.done(function(msg) {
-    		$('#surveyList').html(msg);
-    	});
+        items.push({
+            option: q_items
+        });
+
     });
+
+    $.ajax({
+		method: "POST",
+		url: "aj-insert",
+		headers: {
+			"X-CSRF-TOKEN": csrfToken
+		},
+		contentType: "application/json",
+		data: JSON.stringify({
+			sTitle: name,	//설문지 제목
+			qQuestions: questions,
+			oOptions: items
+		}),
+	});
     
-   
 });
 </script>
 </body>

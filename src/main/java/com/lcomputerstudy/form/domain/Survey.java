@@ -2,9 +2,9 @@ package com.lcomputerstudy.form.domain;
 
 public class Survey {
 	private int sIdx; 	
-	private String sTitle;	//설문 제목
+	private String sTitle;		//설문지 제목
 	private String sDateTime;
-	private int qCount; //질문 수
+	private int qCount; 		//질문 수
 	
 	public int getsIdx() {
 		return sIdx;
