@@ -20,7 +20,7 @@ public interface SurveyService {
 	
 	public void getOptionqIdx(Options options);
 	
-	public void getQuestion(Survey survey);
+	public void get(Options options);
 	
 	public void insertQuestionData(int sIdx, List<Map<String, Object>> qList);
 	

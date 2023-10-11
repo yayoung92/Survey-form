@@ -1,11 +1,13 @@
 package com.lcomputerstudy.form.domain;
 
+import java.util.List;
+
 public class Question {
 	private int qIdx;
 	private int qType;
 	private String qQuestion;
-	private int sIdx;
-	
+	private int sIdx;	
+
 	public int getqIdx() {
 		return qIdx;
 	}

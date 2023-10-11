@@ -70,12 +70,10 @@
       	<col width="50px">
 		<col width="150px">
 		<col width="200px">
-		<col width="50px">
       	<tr>
       		<td style="background-color:#eeeeee; text-align:center;">번호</td>
       		<td style="background-color:#eeeeee; text-align:center;">제목</td>
       		<td style="background-color:#eeeeee; text-align:center;">등록일</td>
-      		<td style="background-color:#eeeeee; text-align:center;">문항 수</td>
 
       	</tr>
       	<c:forEach var="list" items="${list }">
@@ -83,7 +81,6 @@
 	      		<td><a href="/detail?sIdx=${list.sIdx}">${list.sIdx }</a></td>
 	      		<td>${list.sTitle}</td>
 	      		<td>${list.sDateTime}</td>
-	      		<td>${list.qCount}</td>
 	      	</tr>
       	</c:forEach>
       </table>

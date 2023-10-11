@@ -73,10 +73,9 @@ public class SurveyServiceImpl implements SurveyService {
 	public void getOptionqIdx(Options options) {
 		surveymapper.getOptionqIdx(options);
 	}
-	
-	@Override
-	public void getQuestion(Survey survey) {
-		surveymapper.getQuestion(survey);
-	}
 
+	@Override
+	public void get(Options options) {
+		surveymapper.get(options);
+	}
 }

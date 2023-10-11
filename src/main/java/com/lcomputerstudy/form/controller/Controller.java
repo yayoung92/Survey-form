@@ -29,8 +29,12 @@ public class Controller {
 	public String sum(Model model) {
 		return "/form2";
 	}
-	
-	@RequestMapping("/aj-insert")
+	@RequestMapping("/aj-insertquestion")
+	public String insquesi(@RequestBody Question question, Model model) {
+		surveyservice.insertQuestion(question);
+		return "/form2";
+	}
+	@RequestMapping("/aj-insertsurvey")
 	public String ins(@RequestBody Map<String, Object> pay, Survey survey, Question question, Options options) {
 		String name = (String) pay.get("sTitle");
 		List<Map<String, Object>> qList = (List<Map<String, Object>>) pay.get("qQuestions"); 
@@ -42,8 +46,8 @@ public class Controller {
 		int sIdx = survey.getsIdx();
 		
 		for (Map<String, Object> qData : qList) {
-	        String qTitle = (String) qData.get("title");
-	        int qType = (int) qData.get("type");
+	        String qTitle = (String) qData.get("qQuestion");
+	        int qType = (int) qData.get("qType");
 
 	        question.setqQuestion(qTitle);
 	        question.setqType(qType);
@@ -51,7 +55,8 @@ public class Controller {
 	        surveyservice.insertQuestion(question);
 
 		}
-		surveyservice.getQuestion(survey);
+		
+		System.out.println(qList.toString());
 		if(question.getqType() == 2) {
 			
 			for (Map<String, Object> optionData : oList) {
@@ -66,7 +71,7 @@ public class Controller {
                 }
             }
         }
-		surveyservice.getOptionqIdx(options);
+//		surveyservice.getOptionqIdx(options);
 		return "/index";
 	}
 }
