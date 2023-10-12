@@ -71,6 +71,7 @@
         SET		q_idx = #{qIdx}
         WHERE	s_idx = #{sIdx}
 	</update>
+	
 	<select id="getqIdx">
 		SELECT  q_idx as #{qIdx}
 		FROM	y_question
@@ -82,14 +83,18 @@
 		SET		q_idx = (
 			SELECT	q_idx
 			FROM	y_question
-			WHERE	q_type = 2 AND s_idx = #{sIdx}
+			WHERE	q_type = 2
+			ORDER BY s_idx DESC
+        	LIMIT 1
 		)
-		WHERE s_idx = #{sIdx}
-	    AND EXISTS (
-	        SELECT 1
-	        FROM y_question
-	        WHERE q_type = 2 AND s_idx = #{sIdx}
-	    )
+		WHERE s_idx = (
+			SELECT	s_idx
+			FROM	y_question
+			WHERE	q_type = 2
+			ORDER BY s_idx DESC
+			LIMIT 1
+		)
 	</update>
+
 </mapper>
 

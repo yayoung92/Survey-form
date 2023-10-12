@@ -180,11 +180,8 @@ $(document).on('click', '#btn_survey', function () {
         
         questions.push({
             qQuestion: q_question,
-            qType: Number(q_type)
-        });
-
-        items.push({
-            option: q_items
+            qType: Number(q_type),
+            oOption: q_items
         });
 
     });

@@ -33,8 +33,8 @@ public class SurveyServiceImpl implements SurveyService {
 	@Override
 	public void insertQuestionData(int sIdx, List<Map<String, Object>> qList) {
         for (Map<String, Object> qData : qList) {
-            String qTitle = (String) qData.get("title");
-            int qType = (int) qData.get("type");
+            String qTitle = (String) qData.get("qQuestion");
+            int qType = (Integer) qData.get("qType");
 
             Question question = new Question();
             question.setqQuestion(qTitle);
@@ -52,9 +52,11 @@ public class SurveyServiceImpl implements SurveyService {
 	@Override
     public void insertOptionData(int sIdx, List<Map<String, Object>> oList) {
         for (Map<String, Object> optionData : oList) {
-            List<String> optionTexts = (List<String>) optionData.get("option");
+            List<String> optionTexts = (List<String>) optionData.get("oOption");
+            int size = optionTexts.size();
 
-            for (String optionText : optionTexts) {
+            for (int i=0; i<size; i++) {
+            	String optionText = optionTexts.get(i);
             	
                 Options options = new Options();
                 options.setoOption(optionText);
