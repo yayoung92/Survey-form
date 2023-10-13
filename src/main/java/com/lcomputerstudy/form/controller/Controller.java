@@ -90,14 +90,21 @@ public class Controller {
 		return "/surveylist";
 	}
 	@RequestMapping("/resultSurvey")
-	public String insquesi(Model model) {
+	public String insquesi(@RequestParam("sIdx") int sIdx, Model model) {
+		Survey survey = surveyservice.viewSurvey(sIdx);
+		List<Question> question = surveyservice.viewQuestion(sIdx);
+		List<Options> option = surveyservice.viewOption(sIdx);
+		model.addAttribute("survey", survey);
+		model.addAttribute("question", question);
+		model.addAttribute("option", option);
 		return "/resultSurvey";
 	}
 	@RequestMapping("/form-view")
 	public String sum(Model model) {
 		return "/form2";
 	}
-
+	
+	//RequestBody Map 으로 받기
 	@RequestMapping("/aj-insertsurvey")
 	public String ins(@RequestBody Map<String, Object> pay, Survey survey, Question question, Options options) {
 		String name = (String) pay.get("sTitle");
@@ -122,7 +129,7 @@ public class Controller {
             if(question.getqType() == 2) {
 	            for (String optionText : optionTexts) {
 	            	
-	                options.setoOption(optionText);
+	        //        options.setoOption(optionText);
 	                options.setsIdx(sIdx);
 	                surveyservice.insertOption(options);
 	                surveyservice.getOptionqIdx(options);
@@ -133,25 +140,13 @@ public class Controller {
         }
 		
 		System.out.println(qList.toString());
-		
-		/*		for (Map<String, Object> optionData : qList) {
-            List<String> optionTexts = (List<String>) optionData.get("oOption");
-
-            for (String optionText : optionTexts) {
-            	
-                options.setoOption(optionText);
-                options.setsIdx(sIdx);
-                surveyservice.insertOption(options);
-            }
-        }
-		if(question.getqType() == 2) {
-			System.out.println("type= " + question.getqType());
-			surveyservice.insertOptionData(sIdx, oList);
-			surveyservice.getOptionqIdx(options);
-        }
-		
-		System.out.println(oList.toString());
-	//	surveyservice.getOptionqIdx(options); */
 		return "/index";
+	}
+	
+	//RequetBody Survey 로 받아서 값 주기
+	@RequestMapping("/aj-insert")
+	public String in(@RequestBody Survey survey, Model model) {
+		surveyservice.insertSurvey(survey);
+		return "/form";
 	}
 }

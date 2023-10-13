@@ -73,7 +73,6 @@
 					<option value="2">객관식</option>
 					<option value="3">장문형</option>
 				</select>
-	<!--  			<input type="text" name="q_anwser" placeholder="답변"><br>-->
 				<hr>
 				<button type="button" class="addQuestion">질문 추가</button>
 				
@@ -84,7 +83,7 @@
 		</div>
 	</div>
 	<div class="button-container">
-		<a id="btn_survey" class="custom-button" type="button">설문지 만들기</a>
+		<a id="btn_survey" class="custom-button" type="button" href="/surveylist">설문지 만들기</a>
 	</div>
 	
 <script>
@@ -170,36 +169,36 @@ $(document).on('click', '#btn_survey', function () {
     $('.question').each(function () {
         let q_question = $(this).find('input[name="q_title"]').val();
         let q_type = $(this).find('select[name="q_type"]').val();
-        let q_items = [];
+        let o_option = [];
 		
         if(q_type === '2') {
         	$(this).find('input[name="q_ar[]"]').each(function () {
-                q_items.push($(this).val());
+        		o_option.push($(this).val());
             });
         }
         
         questions.push({
             qQuestion: q_question,
             qType: Number(q_type),
-            oOption: q_items
+            oOption: o_option       
         });
 
     });
 
     $.ajax({
 		method: "POST",
-		url: "aj-insertsurvey",
+		url: "aj-insert",
 		headers: {
 			"X-CSRF-TOKEN": csrfToken
 		},
 		contentType: "application/json",
 		data: JSON.stringify({
-			sTitle: title,	
-			qQuestions: questions,
-			oOptions: items
+			"sTitle": title,	
+			"qQuestionslist": questions
 		}),
 	});
-    
+
+    console.log(title, questions)
 });
 </script>
 </body>

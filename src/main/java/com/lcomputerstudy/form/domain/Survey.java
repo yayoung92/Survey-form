@@ -6,7 +6,21 @@ public class Survey {
 	private int sIdx; 	
 	private String sTitle;		//설문지 제목
 	private String sDateTime;
+	private List<Question> qQuestionslist;
+	private List<Options> oOptionslist;
 	
+	public List<Options> getoOptionslist() {
+		return oOptionslist;
+	}
+	public void setoOptionslist(List<Options> oOptionslist) {
+		this.oOptionslist = oOptionslist;
+	}
+	public List<Question> getqQuestionslist() {
+		return qQuestionslist;
+	}
+	public void setqQuestionslist(List<Question> qQuestionslist) {
+		this.qQuestionslist = qQuestionslist;
+	}
 	public int getsIdx() {
 		return sIdx;
 	}

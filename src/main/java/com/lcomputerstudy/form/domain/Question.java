@@ -6,8 +6,15 @@ public class Question {
 	private int qIdx;
 	private int qType;
 	private String qQuestion;
-	private int sIdx;	
+	private int sIdx;
+	private List<Options> oOption;
 
+	public List<Options> getoOption() {
+		return oOption;
+	}
+	public void setoOption(List<Options> oOption) {
+		this.oOption = oOption;
+	}
 	public int getqIdx() {
 		return qIdx;
 	}

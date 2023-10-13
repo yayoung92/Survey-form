@@ -84,7 +84,9 @@
 	      	</tr>
       	</c:forEach>
       </table>
-
+    <div class="button-container">
+    	<a class="custom-button" href="form-view" role="button">설문지 만들기</a>
+    </div>
 	
 </body>
 </html>

@@ -23,6 +23,22 @@ public class SurveyServiceImpl implements SurveyService {
 	@Override
 	public void insertSurvey(Survey survey) {
 		surveymapper.insertSurvey(survey);
+		int sId = survey.getsIdx();
+		for(Question question : survey.getqQuestionslist()) {
+			question.setsIdx(sId);
+			surveymapper.insertQuestion(question);
+			
+			if(question.getqType() ==2) {
+				int qId = question.getqIdx();
+				for(Options options : question.getoOption()) {
+					options.setsIdx(sId);
+					options.setqIdx(qId);
+					surveymapper.insertOption(options);
+				}
+				
+			}
+			
+		}
 	}
 	
 	@Override
@@ -58,10 +74,10 @@ public class SurveyServiceImpl implements SurveyService {
             for (int i=0; i<size; i++) {
             	String optionText = optionTexts.get(i);
             	
-                Options options = new Options();
-                options.setoOption(optionText);
-                options.setsIdx(sIdx);
-                surveymapper.insertOption(options);
+       //         Options options = new Options();
+       //         options.setoOption(optionText);
+        //        options.setsIdx(sIdx);
+        //        surveymapper.insertOption(options);
             }
         }
     }
@@ -79,5 +95,20 @@ public class SurveyServiceImpl implements SurveyService {
 	@Override
 	public void get(Options options) {
 		surveymapper.get(options);
+	}
+	
+	@Override
+	public Survey viewSurvey(int sIdx) {
+		return surveymapper.viewSurvey(sIdx);
+	}
+	
+	@Override
+	public List<Question> viewQuestion(int sIdx) {
+		return surveymapper.viewQuestion(sIdx);
+	}
+	
+	@Override
+	public List<Options> viewOption(int sIdx) {
+		return surveymapper.viewOption(sIdx);
 	}
 }

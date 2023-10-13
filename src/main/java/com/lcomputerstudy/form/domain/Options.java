@@ -6,6 +6,9 @@ public class Options {
 	private String oOption;	//객관식 질문
 	private int sIdx;
 	
+	public Options(String oOption) {
+		this.oOption = oOption;
+	}
 	public int getsIdx() {
 		return sIdx;
 	}

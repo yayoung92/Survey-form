@@ -8,7 +8,7 @@
 		FROM		y_survey
 	</select>
 	
-	<insert id="insertSurvey" parameterType="Survey">
+	<insert id="insertSurvey" parameterType="Survey" useGeneratedKeys="true" keyProperty="sIdx">
 		INSERT INTO y_survey(
 			s_idx,
 			s_title, 
@@ -24,7 +24,7 @@
         </selectKey>
 	</insert>
 
-	<insert id="insertQuestion" parameterType="Question">
+	<insert id="insertQuestion" parameterType="Question" useGeneratedKeys="true" keyProperty="qIdx">
 		INSERT INTO y_question(
 			q_idx, 
 			q_type, 
@@ -95,6 +95,29 @@
 			LIMIT 1
 		)
 	</update>
-
+	<select id="viewSurvey" parameterType="Integer" resultType="Survey">
+		SELECT	s_idx as sIdx,
+				s_title as sTitle
+		FROM	y_survey
+		WHERE	s_idx = #{sIdx}
+	</select>
+	
+	<select id="viewQuestion" parameterType="Integer" resultType="Question">
+		SELECT	s_idx as sIdx,
+				q_idx as qIdx,
+				q_type as qType,
+				q_question as qQuestion
+		FROM	y_question
+		WHERE	s_idx = #{sIdx}
+	</select>
+	
+	<select id="viewOption" parameterType="Integer" resultType="Options">
+		SELECT	o_idx as oIdx,
+				s_idx as sIdx,
+				q_idx as qIdx,
+				o_option as oOption
+		FROM	y_option
+		WHERE	s_idx = #{sIdx}
+	</select>
 </mapper>
 

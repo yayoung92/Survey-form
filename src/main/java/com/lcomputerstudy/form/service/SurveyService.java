@@ -25,5 +25,11 @@ public interface SurveyService {
 	public void insertQuestionData(int sIdx, List<Map<String, Object>> qList);
 	
 	public void insertOptionData(int sIdx, List<Map<String, Object>> oList);
+	
+	public Survey viewSurvey(int sIdx);
+	
+	public List<Question> viewQuestion(int sIdx);
+	
+	public List<Options> viewOption(int sIdx);
 
 }
