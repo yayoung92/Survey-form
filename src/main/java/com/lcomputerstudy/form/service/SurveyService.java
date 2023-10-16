@@ -3,8 +3,10 @@ package com.lcomputerstudy.form.service;
 import java.util.List;
 import java.util.Map;
 
+import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
+import com.lcomputerstudy.form.domain.Response;
 import com.lcomputerstudy.form.domain.Survey;
 
 public interface SurveyService {
@@ -31,5 +33,11 @@ public interface SurveyService {
 	public List<Question> viewQuestion(int sIdx);
 	
 	public List<Options> viewOption(int sIdx);
+	
+	public void insertAnswer(Answer answer);
+	
+	public void insertResponse(Response response);
+	
+	public int viewAnswer(Answer answer);
 
 }

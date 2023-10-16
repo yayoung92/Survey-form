@@ -7,17 +7,21 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lcomputerstudy.form.domain.User;
+import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
+import com.lcomputerstudy.form.domain.Response;
 import com.lcomputerstudy.form.domain.Survey;
 import com.lcomputerstudy.form.service.SurveyService;
 import com.lcomputerstudy.form.service.UserService;
@@ -103,6 +107,21 @@ public class Controller {
 	public String sum(Model model) {
 		return "/form2";
 	}
+	
+	@RequestMapping("/aj-insertanswer")
+	public String insertAnswer(Model model, @RequestBody Answer answer) {
+		surveyservice.insertAnswer(answer);
+	//	surveyservice.insertResponse(response);
+		System.out.println(answer.toString());
+		System.out.println(answer.getaAnswer());
+		return "/surveylist";
+	}
+	
+	@GetMapping("/aj-viewAnswer")
+    public ResponseEntity<Integer> getActionData(Answer answer, Model model) {
+        int actionData = surveyservice.viewAnswer(answer);
+        return ResponseEntity.ok(actionData);
+    }
 	
 	//RequestBody Map 으로 받기
 	@RequestMapping("/aj-insertsurvey")

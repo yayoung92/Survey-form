@@ -119,5 +119,26 @@
 		FROM	y_option
 		WHERE	s_idx = #{sIdx}
 	</select>
+	
+	<insert id="insertAnswer" parameterType="Answer">
+		INSERT INTO y_answer(
+			o_idx,
+			q_idx,
+			a_answer,
+			s_idx
+		)
+		VALUES (
+			#{oIdx},
+        	#{qIdx}, 
+        	#{aAnswer},
+        	#{sIdx}
+        )
+	</insert>
+	
+	<select id="viewAnswer" parameterType="Integer" resultType="Answer">
+		SELECT	count(*) as count
+		FROM	y_answer
+		WHERE	q_idx = #{qIdx}
+	</select>
 </mapper>
 

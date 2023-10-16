@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
+import com.lcomputerstudy.form.domain.Response;
 import com.lcomputerstudy.form.domain.Survey;
 
 @Mapper
@@ -34,4 +36,10 @@ public interface SurveyMapper {
 	public List<Question> viewQuestion(int sIdx);
 	
 	public List<Options> viewOption(int sIdx);
+	
+	public void insertAnswer(Answer answer);
+	
+	public void insertResponse(Response response);
+	
+	public int viewAnswer(Answer answer);
 }

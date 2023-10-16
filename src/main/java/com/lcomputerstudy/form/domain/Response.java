@@ -2,31 +2,18 @@ package com.lcomputerstudy.form.domain;
 
 import java.util.List;
 
-public class Answer {
-	private int aId;
-	private int sIdx;
+public class Response {
 	private int qIdx;
 	private int oIdx;
+	private int sIdx;
 	private String aAnswer;
-//	private List<Answer> aAnswerlist;
+	private List<Answer> aAnswerlist;
 	
-	public int getoIdx() {
-		return oIdx;
+	public List<Answer> getaAnswerlist() {
+		return aAnswerlist;
 	}
-	public void setoIdx(int oIdx) {
-		this.oIdx = oIdx;
-	}
-//	public List<Answer> getaAnswerlist() {
-//		return aAnswerlist;
-//	}
-//	public void setaAnswerlist(List<Answer> aAnswerlist) {
-//		this.aAnswerlist = aAnswerlist;
-//	}
-	public int getaId() {
-		return aId;
-	}
-	public void setaId(int aId) {
-		this.aId = aId;
+	public void setaAnswerlist(List<Answer> aAnswerlist) {
+		this.aAnswerlist = aAnswerlist;
 	}
 	public int getsIdx() {
 		return sIdx;
@@ -39,6 +26,12 @@ public class Answer {
 	}
 	public void setqIdx(int qIdx) {
 		this.qIdx = qIdx;
+	}
+	public int getoIdx() {
+		return oIdx;
+	}
+	public void setoIdx(int oIdx) {
+		this.oIdx = oIdx;
 	}
 	public String getaAnswer() {
 		return aAnswer;

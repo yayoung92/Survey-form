@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lcomputerstudy.form.domain.Answer;
+import com.lcomputerstudy.form.domain.Response;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
 import com.lcomputerstudy.form.domain.Survey;
@@ -111,4 +113,30 @@ public class SurveyServiceImpl implements SurveyService {
 	public List<Options> viewOption(int sIdx) {
 		return surveymapper.viewOption(sIdx);
 	}
+	
+	@Override
+	public void insertAnswer(Answer answer) {
+
+		surveymapper.insertAnswer(answer);
+	}
+	
+	@Override
+	public void insertResponse(Response response) {
+		surveymapper.insertResponse(response);
+		int sId = response.getsIdx();
+		int qId = response.getqIdx();
+		String aAnswer = response.getaAnswer();
+		for(Answer answer : response.getaAnswerlist()) {
+			answer.setsIdx(sId);
+			answer.setaAnswer(aAnswer);
+			answer.setqIdx(qId);
+			surveymapper.insertAnswer(answer);
+		}
+	}
+	
+	@Override
+	public int viewAnswer(Answer answer) {
+		return surveymapper.viewAnswer(answer);
+	}
+
 }
