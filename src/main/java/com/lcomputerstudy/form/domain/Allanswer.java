@@ -2,9 +2,10 @@ package com.lcomputerstudy.form.domain;
 
 import java.util.List;
 
-public class Response {
+public class Allanswer {
+	private int aaIdx;
 	private int sIdx;
-	private List<Allanswer> aAnswer;
+	private String aAnswer;
 	private List<Answer> aAnswerlist;
 	
 	public List<Answer> getaAnswerlist() {
@@ -13,17 +14,23 @@ public class Response {
 	public void setaAnswerlist(List<Answer> aAnswerlist) {
 		this.aAnswerlist = aAnswerlist;
 	}
+	public int getAaIdx() {
+		return aaIdx;
+	}
+	public void setAaIdx(int aaIdx) {
+		this.aaIdx = aaIdx;
+	}
 	public int getsIdx() {
 		return sIdx;
 	}
 	public void setsIdx(int sIdx) {
 		this.sIdx = sIdx;
 	}
-	public List<Allanswer> getaAnswer() {
+	public String getaAnswer() {
 		return aAnswer;
 	}
-	public void setaAnswer(List<Allanswer> aAnswer) {
+	public void setaAnswer(String aAnswer) {
 		this.aAnswer = aAnswer;
 	}
-
+	
 }

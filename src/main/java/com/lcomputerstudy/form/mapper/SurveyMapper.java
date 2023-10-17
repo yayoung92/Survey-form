@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
@@ -39,7 +40,14 @@ public interface SurveyMapper {
 	
 	public void insertAnswer(Answer answer);
 	
+	public void insertallAnswer(Allanswer allanswer);
+	
 	public void insertResponse(Response response);
 	
 	public int viewAnswer(Answer answer);
+	
+	public List<Answer> viewAnswers(int sIdx);
+	
+	public Map<String, Object> get(Answer answer);
+	
 }

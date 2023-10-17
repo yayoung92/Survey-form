@@ -130,15 +130,47 @@
 		VALUES (
 			#{oIdx},
         	#{qIdx}, 
+        	#{oOption},
+        	#{sIdx}
+        )
+	</insert>
+	
+	<select id="viewAnswers" parameterType="Integer" resultType="Answer">
+		SELECT	o_idx as oIdx,
+				s_idx as sIdx,
+				q_idx as qIdx,
+				a_answer as oOption
+		FROM	y_answer
+		WHERE	s_idx = #{sIdx}
+	</select>
+	
+	<select id="viewAnswer" parameterType="Integer" resultType="Answer">
+		SELECT	count(*) as count
+		FROM	y_answer
+		WHERE	s_idx = #{sIdx}
+	</select>
+	
+	<insert id="insertallAnswer">
+		INSERT INTO y_allanswer(
+			a_answer,
+			s_idx
+		)
+		VALUES (
         	#{aAnswer},
         	#{sIdx}
         )
 	</insert>
 	
-	<select id="viewAnswer" parameterType="Integer" resultType="Answer">
-		SELECT	count(*) as count
-		FROM	y_answer
-		WHERE	q_idx = #{qIdx}
-	</select>
+	<insert id="insertResponse">
+		INSERT INTO y_allanswer(
+			a_answer,
+			s_idx
+		)
+		VALUES (
+        	#{aAnswer},
+        	#{sIdx}
+        )
+	</insert>
+	
 </mapper>
 

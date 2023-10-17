@@ -3,6 +3,7 @@ package com.lcomputerstudy.form.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,19 +110,25 @@ public class Controller {
 	}
 	
 	@RequestMapping("/aj-insertanswer")
-	public String insertAnswer(Model model, @RequestBody Answer answer) {
-		surveyservice.insertAnswer(answer);
-	//	surveyservice.insertResponse(response);
-		System.out.println(answer.toString());
-		System.out.println(answer.getaAnswer());
+	public String insertAnswer(Model model, @RequestBody Response response) {
+		surveyservice.insertResponse(response);
+		System.out.println(response.getaAnswer());
+
 		return "/surveylist";
 	}
 	
 	@GetMapping("/aj-viewAnswer")
-    public ResponseEntity<Integer> getActionData(Answer answer, Model model) {
-        int actionData = surveyservice.viewAnswer(answer);
+    public ResponseEntity<?> getActionData(Answer answer, Model model) {
+        Survey actionData = surveyservice.viewSurvey(150);
         return ResponseEntity.ok(actionData);
     }
+	
+	//RequetBody Survey 로 받아서 값 주기
+	@RequestMapping("/aj-insert")
+	public String in(@RequestBody Survey survey, Model model) {
+		surveyservice.insertSurvey(survey);
+		return "/form";
+	}
 	
 	//RequestBody Map 으로 받기
 	@RequestMapping("/aj-insertsurvey")
@@ -161,11 +168,5 @@ public class Controller {
 		System.out.println(qList.toString());
 		return "/index";
 	}
-	
-	//RequetBody Survey 로 받아서 값 주기
-	@RequestMapping("/aj-insert")
-	public String in(@RequestBody Survey survey, Model model) {
-		surveyservice.insertSurvey(survey);
-		return "/form";
-	}
+
 }

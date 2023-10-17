@@ -11,42 +11,55 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+	var answersData = [${answers}];
+	
+	console.log(${JSON.stringify(answers)});
+	
+	google.charts.load('current', {'packages': ['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+	    var data = new google.visualization.DataTable();
+	    console.log(data);
+	    
+	    data.addColumn('string', 'aAnswer');
+	    data.addColumn('number', 'count');
 
-      function getDataAndDrawChart() {
-    	  var xhttp = new XMLHttpRequest();
-    	  
-    	  xhttp.onreadystatechange = function() {
-    	    
-    	      var result = JSON.parse(this.responseText);
-    	      drawChart(result);
-    	    
-    	  };
+	    data.addRows([
+	    	  ['Bob', 5],
+	    	  ['Alice', 10]
+	    	]);
+    	
+	    for (var i = 0; i < answersData.length; i++) {
+	        data.addRow([answersData[i].aAnswer, answersData[i].count]);
+	    }
+	
+	    var options = {
+	        title: 'Answers'
+	    };
+	
+	    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+	
+	    chart.draw(data, options);
 
-    	  xhttp.open("GET", "/aj-viewAnswer", true);
-    	  xhttp.send();
-    	}
+	    
+	    console.log(options);
+	};
 
-    	function drawChart(result) {
-    	  var data = google.visualization.arrayToDataTable([
-    	    ['답변', '수'],
-    	    ['Work',     result],
-    	    ['Eat',      2],
-    	    ['Commute',  5],
-    	    ['Watch TV', 7],
-    	    ['Sleep',    9]
-    	  ]);
-			console.log(result);
-    	  var options = {
-    	    title: 'My Daily Activities'
-    	  };
-
-    	  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-    	  chart.draw(data, options);
-    	}
+	$.ajax({
+	    url: '/aj-viewAnswer',
+	    method: 'GET',
+    	contentType: "application/json",
+	    success: function(data) {
+	        var answersData = JSON.parse(data);
+	        drawChart();
+	    },
+	    error: function(error) {
+	        console.error('Error fetching chart data: ', error);
+	    }
+	});
     
-    </script>
+</script>
 <meta name="_csrf" content="${_csrf.token }">
 </head>
 <style>
@@ -127,7 +140,7 @@
 								<c:when test="${question.qType eq 3 }">
 									<input type="hidden" name="qIdx" value="${question.qIdx}">
 							        <input type="hidden" name="q_type" value="${question.qType}">
-									<textarea class="output" style="width: 500px; height: 30px;" placeholder="100자 내외"></textarea>
+									<textarea class="output" name="aAnswer" style="width: 500px; height: 30px;" placeholder="100자 내외"></textarea>
 								</c:when>
 								<c:when test="${question.qType eq 1 }">
 									<input type="hidden" name="qIdx" value="${question.qIdx}">
@@ -162,34 +175,52 @@ $(document).on('click', '#b_survey', function () {
     let questions = [];
     let sId = $(this).parent().prev().find('input[name="sIdx"]').val();
     let csrfToken = $("meta[name='_csrf']").attr("content");
-
+    let answer = [];
+    
     $('.answerQuestion').each(function () {
         let qId = $(this).find('input[name="qIdx"]').val();
         let oId = $(this).find('input[name="oIdx"]').val();
-        let a_a = $(this).find('input[name="aAnswer"]').val();
-        let a_answer = $(this).find('input[name="oOption"]').val();
-        let o_option = [];
-        let q_type = $(this).find('input[name="q_type"]').val();
+        let alls = $(this).find('input[name="aAnswer"], textarea[name="aAnswer"], input[name="oOption"]').val();
         
-
-        if(q_type === '2') {
+        let a_answer = $(this).find('input[name="oOption"]').val();
+        
+        let o_option = $(this).find('input[name="aAnswer"], textarea[name="aAnswer"]').val();
+        let q_type = $(this).find('input[name="q_type"]').val();
+        let all = [];
+        
+       if(q_type === '2') {
         	$(this).find('input[name="oOption"]').each(function () {
-        		o_option.push($(this).val());
+        		all.push($(this).val());
+            });
+        } else {
+        	$(this).find('input[name="aAnswer"], textarea[name="aAnswer"]').each(function () {
+        		all.push($(this).val());
             });
         }
             
         questions.push({
         	qIdx: qId,
             oIdx: oId,
-            aAnsw: a_a,
             aAnswer: a_answer,
-            oOption: o_option       
+            all: all,
+            oOption: o_option    //주관식 답변 가져옴.   
         });
+
+        answer.push({ allAnswer: alls});
+    });
+
+    $.ajax({
+		method: "POST",
+	//	url: "aj-insertanswer",
+		headers: {
+    		"X-CSRF-TOKEN": csrfToken
+    	},
+    	contentType: "application/json",
+    	data: JSON.stringify({"sIdx":sId, "aAnswerlist":questions})
 
     });
 
-
-    console.log(sId, questions)
+    console.log(sId, answer, questions)
 });
 </script>
 </body>

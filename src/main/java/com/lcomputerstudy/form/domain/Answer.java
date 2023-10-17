@@ -7,7 +7,7 @@ public class Answer {
 	private int sIdx;
 	private int qIdx;
 	private int oIdx;
-	private String aAnswer;
+	private String oOption;
 //	private List<Answer> aAnswerlist;
 	
 	public int getoIdx() {
@@ -40,10 +40,11 @@ public class Answer {
 	public void setqIdx(int qIdx) {
 		this.qIdx = qIdx;
 	}
-	public String getaAnswer() {
-		return aAnswer;
+	public String getoOption() {
+		return oOption;
 	}
-	public void setaAnswer(String aAnswer) {
-		this.aAnswer = aAnswer;
+	public void setoOption(String oOption) {
+		this.oOption = oOption;
 	}
+
 }

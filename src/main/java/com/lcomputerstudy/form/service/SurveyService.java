@@ -3,6 +3,7 @@ package com.lcomputerstudy.form.service;
 import java.util.List;
 import java.util.Map;
 
+import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
@@ -36,8 +37,15 @@ public interface SurveyService {
 	
 	public void insertAnswer(Answer answer);
 	
+	public void insertallAnswer(Allanswer allanswer);
+	
 	public void insertResponse(Response response);
 	
 	public int viewAnswer(Answer answer);
+	
+	public List<Answer> viewAnswers(int sIdx);
+	
+	public Map<String, Object> get(Answer answer);
+	
 
 }
