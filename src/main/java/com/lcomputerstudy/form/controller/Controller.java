@@ -117,11 +117,33 @@ public class Controller {
 		return "/surveylist";
 	}
 	
+	/////// pie chart 보여주기
 	@GetMapping("/aj-viewAnswer")
     public ResponseEntity<?> getActionData(Answer answer, Model model) {
         Survey actionData = surveyservice.viewSurvey(150);
         return ResponseEntity.ok(actionData);
     }
+	
+	@RequestMapping("/aj-chart-data")
+	public String showChart(Model model, Answer answer) {
+		List<Integer> a = surveyservice.selectAnswerlist(answer);
+		String data = a.toString();
+		System.out.println(data);
+		
+		List<Answer> ans = surveyservice.selectAnswerList(150, answer);
+		String data2 = ans.toString();
+		String aa = answer.getoOption();
+		System.out.println(ans);
+		System.out.println(data2);
+		System.out.println("aa: " + aa);
+	
+		model.addAttribute("chartData", data);
+		model.addAttribute("ch", data2);
+		return "/chart";
+	}
+	
+	
+	
 	
 	//RequetBody Survey 로 받아서 값 주기
 	@RequestMapping("/aj-insert")

@@ -46,5 +46,9 @@ public class Answer {
 	public void setoOption(String oOption) {
 		this.oOption = oOption;
 	}
+	@Override
+	public String toString() {
+		return "\"" + oOption + "\"";
+	}
 
 }

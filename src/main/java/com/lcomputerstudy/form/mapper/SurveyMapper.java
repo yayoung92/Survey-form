@@ -50,4 +50,8 @@ public interface SurveyMapper {
 	
 	public Map<String, Object> get(Answer answer);
 	
+	public List<Integer> selectAnswerlist(Answer answer);
+	
+	public List<Answer> selectAnswerList(int sIdx, Answer answer);
+	
 }

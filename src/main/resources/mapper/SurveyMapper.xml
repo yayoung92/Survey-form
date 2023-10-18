@@ -172,5 +172,18 @@
         )
 	</insert>
 	
+	<select id="selectAnswerlist">
+		SELECT	count(*) as count
+		FROM	y_answer
+		GROUP BY q_idx		
+	</select>
+	
+	<select id="selectAnswerList">
+		SELECT	a_answer as oOption, count(*) as count
+		FROM	y_answer
+		WHERE	s_idx AND o_idx != 0
+		GROUP BY o_idx, a_answer
+		ORDER BY count ASC	
+	</select>
 </mapper>
 

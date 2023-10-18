@@ -152,4 +152,14 @@ public class SurveyServiceImpl implements SurveyService {
 	public Map<String, Object> get(Answer answer) {
 		return surveymapper.get(answer);
 	}
+	
+	@Override
+	public List<Integer> selectAnswerlist(Answer answer) {
+		return surveymapper.selectAnswerlist(answer);
+	}
+	
+	@Override
+	public List<Answer> selectAnswerList(int sIdx, Answer answer) {
+		return surveymapper.selectAnswerList(sIdx, answer);
+	}
 }
