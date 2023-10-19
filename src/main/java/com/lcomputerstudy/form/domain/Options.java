@@ -32,5 +32,5 @@ public class Options {
 	}
 	public void setoOption(String oOption) {
 		this.oOption = oOption;
-	}
+	} 
 }

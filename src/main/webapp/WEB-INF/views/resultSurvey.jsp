@@ -11,53 +11,63 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-	var answersData = [${answers}];
-	
-	console.log(${JSON.stringify(answers)});
-	
 	google.charts.load('current', {'packages': ['corechart']});
 	google.charts.setOnLoadCallback(drawChart);
 	
 	function drawChart() {
-	    var data = new google.visualization.DataTable();
-	    console.log(data);
-	    
-	    data.addColumn('string', 'aAnswer');
-	    data.addColumn('number', 'count');
+		let csrfToken = $("meta[name='_csrf']").attr("content");
 
-	    data.addRows([
-	    	  ['Bob', 5],
-	    	  ['Alice', 10]
-	    	]);
-    	
-	    for (var i = 0; i < answersData.length; i++) {
-	        data.addRow([answersData[i].aAnswer, answersData[i].count]);
-	    }
-	
-	    var options = {
-	        title: 'Answers'
-	    };
-	
-	    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-	
-	    chart.draw(data, options);
+		$('.wrap').each(function () {
+			
+			let all = [];
+			let sId = $(this).find('input[name="sIdx"]').val();
+			let qId = $(this).find('input[name="q_Idx"]').val();
+			let oId = $(this).find('input[name="qIdx"]').val();
+				
+			if(qId == oId) {
+	        	$(this).find('input[name="oOption"]').each(function () {
+	        		all.push($(this).val());
+	            });
+	        		
+	        };
 
-	    
-	    console.log(options);
+			console.log(all);
+		    var data = new google.visualization.DataTable();
+		    data.addColumn('string', 'aAnswer');
+		    data.addColumn('number', 'count');
+	
+		    data.addRows([
+		    	  [all[0], 5],
+		    	  [all[1], 10]
+		    ]);
+		    
+		    console.log(data);
+		
+		    var options = {
+		        title: $(this).find('input[name="sTitle"]').val()
+		    };
+		
+		    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		    chart.draw(data, options);
+
+		    $.ajax({
+			    url: 'aj-viewAnswer',
+			    method: 'POST',
+			    headers: {
+		    		"X-CSRF-TOKEN": csrfToken
+		    	},
+		    	contentType: "application/json",
+		    	data: JSON.stringify({"sIdx":sId, "aAnswerlist":all})
+		    
+			})
+			.done(function(msg) {
+				$('#piechart').html(msg);
+			});
+		});
+		
 	};
 
-	$.ajax({
-	    url: '/aj-viewAnswer',
-	    method: 'GET',
-    	contentType: "application/json",
-	    success: function(data) {
-	        var answersData = JSON.parse(data);
-	        drawChart();
-	    },
-	    error: function(error) {
-	        console.error('Error fetching chart data: ', error);
-	    }
-	});
+
     
 </script>
 <meta name="_csrf" content="${_csrf.token }">
@@ -122,7 +132,7 @@
 			<input type="hidden" name="sIdx" value="${survey.sIdx }">
 				<div class="form" >
 					<h1 style="text-align: center; font-size:20px;">설문조사</h1>
-					<span class="sur">${survey.sTitle}</span>
+					<input class="sur" name="sTitle" value="${survey.sTitle}" readonly>
 					<hr class="my-4">
 					<p class="lead">
 					<div class="button-container">
@@ -130,41 +140,47 @@
 					</div>
 				</div>
 				<c:forEach items="${question }" var="question">
-				 	<div class="form-box" >
-				 		<div class="question">
-							<span class="input">${question.qQuestion }</span>
-						</div>
-						<hr>
-						<div class="answerQuestion">
-							<c:choose>
-								<c:when test="${question.qType eq 3 }">
-									<input type="hidden" name="qIdx" value="${question.qIdx}">
-							        <input type="hidden" name="q_type" value="${question.qType}">
-									<textarea class="output" name="aAnswer" style="width: 500px; height: 30px;" placeholder="100자 내외"></textarea>
-								</c:when>
-								<c:when test="${question.qType eq 1 }">
-									<input type="hidden" name="qIdx" value="${question.qIdx}">
-							        <input type="hidden" name="q_type" value="${question.qType}">
-									<input class="output" type="text" name="aAnswer" >
-								</c:when>
-							    <c:when test="${question.qType eq 2 }">
-							    	<input type="hidden" name="q_type" value="${question.qType}">
-							       	<div id="optionlist">
+				 <div class="form-box" >
+				 	<div class="question">
+						<input class="input" name="qQuestion" value="${question.qQuestion }" readonly>
+					</div>
+					<hr>
+					<div class="answerQuestion">
+						<c:choose>
+							<c:when test="${question.qType eq 3 }">
+								<input type="hidden" name="qIdx" value="${question.qIdx}">
+							    <input type="hidden" name="q_type" value="${question.qType}">
+								<textarea class="output" name="aAnswer" style="width: 500px; height: 30px;" placeholder="100자 내외"></textarea>
+							</c:when>
+							<c:when test="${question.qType eq 1 }">
+								<input type="hidden" name="qIdx" value="${question.qIdx}">
+							    <input type="hidden" name="q_type" value="${question.qType}">
+								<input class="output" type="text" name="aAnswer" >
+							</c:when>
+						</c:choose>
+					</div>
+					<div id="optionlist">
+						<c:choose>
+							   <c:when test="${question.qType eq 2 }">
+							    	
+							    <input type="hidden" name="q_type" value="${question.qType}">
+							       	
 							       		<c:forEach items="${option}" var="option">
 							            	<c:choose>
 							        			<c:when test="${question.qIdx eq option.qIdx}">	
+							        				<input type="hidden" name="q_Idx" value="${question.qIdx}">
 							                    	<input type="hidden" name="qIdx" value="${option.qIdx}">
 							                    	<input type="hidden" name="oIdx" value="${option.oIdx}">
 								                   	<input type='checkbox' name="oOption" value="${option.oOption}">${option.oOption}<br>
 								            	</c:when>
 								        	</c:choose>
 								    	</c:forEach>
-									</div>
+									
 								</c:when>
 						   	</c:choose>
-						</div>
 					</div>
-				</c:forEach>
+				</div>
+			</c:forEach>
 		</div>
 		<div class="button-container">
 			<a id="b_survey" class="custom-button" type="button">설문지 제출하기</a>

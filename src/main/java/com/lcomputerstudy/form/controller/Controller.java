@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lcomputerstudy.form.domain.User;
+import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
@@ -118,10 +119,13 @@ public class Controller {
 	}
 	
 	/////// pie chart 보여주기
-	@GetMapping("/aj-viewAnswer")
-    public ResponseEntity<?> getActionData(Answer answer, Model model) {
-        Survey actionData = surveyservice.viewSurvey(150);
-        return ResponseEntity.ok(actionData);
+	@RequestMapping("/aj-viewAnswer")
+    public String getActionData(@RequestBody Response response, Model model) {
+		int sIdx = response.getsIdx();
+		System.out.println(sIdx);
+    //    surveyservice.selectAnswerList(sIdx, answer);
+    //    model.addAttribute("answer", attributeValue);
+        return "/chart";
     }
 	
 	@RequestMapping("/aj-chart-data")

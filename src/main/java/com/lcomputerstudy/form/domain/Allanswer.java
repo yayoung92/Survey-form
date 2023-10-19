@@ -5,7 +5,7 @@ import java.util.List;
 public class Allanswer {
 	private int aaIdx;
 	private int sIdx;
-	private String aAnswer;
+	private String sTitle;
 	private List<Answer> aAnswerlist;
 	
 	public List<Answer> getaAnswerlist() {
@@ -26,11 +26,16 @@ public class Allanswer {
 	public void setsIdx(int sIdx) {
 		this.sIdx = sIdx;
 	}
-	public String getaAnswer() {
-		return aAnswer;
+	public String getsTitle() {
+		return sTitle;
 	}
-	public void setaAnswer(String aAnswer) {
-		this.aAnswer = aAnswer;
+	public void setsTitle(String sTitle) {
+		this.sTitle = sTitle;
+	}
+	@Override
+	public String toString() {
+		return "Allanswer [aaIdx=" + aaIdx + ", sIdx=" + sIdx + ", sTitle=" + sTitle + ", aAnswerlist=" + aAnswerlist
+				+ "]";
 	}
 	
 }

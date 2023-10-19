@@ -39,4 +39,9 @@ public class Question {
 	public void setsIdx(int sIdx) {
 		this.sIdx = sIdx;
 	}
+	@Override
+	public String toString() {
+		return "Question [qIdx=" + qIdx + ", qType=" + qType + ", qQuestion=" + qQuestion + ", sIdx=" + sIdx
+				+ ", oOption=" + oOption + "]";
+	}
 }

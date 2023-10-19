@@ -8,6 +8,9 @@ public class Answer {
 	private int qIdx;
 	private int oIdx;
 	private String oOption;
+	private int count;
+	private int aAIdx;
+	private String aAnswer;
 //	private List<Answer> aAnswerlist;
 	
 	public int getoIdx() {
@@ -46,9 +49,30 @@ public class Answer {
 	public void setoOption(String oOption) {
 		this.oOption = oOption;
 	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public int getaAIdx() {
+		return aAIdx;
+	}
+	public void setaAIdx(int aAIdx) {
+		this.aAIdx = aAIdx;
+	}
+	
+	public String getaAnswer() {
+		return aAnswer;
+	}
+	public void setaAnswer(String aAnswer) {
+		this.aAnswer = aAnswer;
+	}
 	@Override
 	public String toString() {
-		return "\"" + oOption + "\"";
+		return "Answer [aId=" + aId + ", sIdx=" + sIdx + ", qIdx=" + qIdx + ", oIdx=" + oIdx + ", oOption=" + oOption
+				+ ", count=" + count + ", aAIdx=" + aAIdx + ", aAnswer=" + aAnswer + "]";
 	}
+
 
 }
