@@ -7,11 +7,8 @@ public class Answer {
 	private int sIdx;
 	private int qIdx;
 	private int oIdx;
-	private String oOption;
 	private int count;
-	private int aAIdx;
 	private String aAnswer;
-//	private List<Answer> aAnswerlist;
 	
 	public int getoIdx() {
 		return oIdx;
@@ -19,12 +16,6 @@ public class Answer {
 	public void setoIdx(int oIdx) {
 		this.oIdx = oIdx;
 	}
-//	public List<Answer> getaAnswerlist() {
-//		return aAnswerlist;
-//	}
-//	public void setaAnswerlist(List<Answer> aAnswerlist) {
-//		this.aAnswerlist = aAnswerlist;
-//	}
 	public int getaId() {
 		return aId;
 	}
@@ -43,25 +34,12 @@ public class Answer {
 	public void setqIdx(int qIdx) {
 		this.qIdx = qIdx;
 	}
-	public String getoOption() {
-		return oOption;
-	}
-	public void setoOption(String oOption) {
-		this.oOption = oOption;
-	}
 	public int getCount() {
 		return count;
 	}
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int getaAIdx() {
-		return aAIdx;
-	}
-	public void setaAIdx(int aAIdx) {
-		this.aAIdx = aAIdx;
-	}
-	
 	public String getaAnswer() {
 		return aAnswer;
 	}
@@ -70,9 +48,7 @@ public class Answer {
 	}
 	@Override
 	public String toString() {
-		return "Answer [aId=" + aId + ", sIdx=" + sIdx + ", qIdx=" + qIdx + ", oIdx=" + oIdx + ", oOption=" + oOption
-				+ ", count=" + count + ", aAIdx=" + aAIdx + ", aAnswer=" + aAnswer + "]";
+		return "{\"aAnswer\": \"" + aAnswer + "\", \"count\": " + count + "}";
 	}
-
 
 }

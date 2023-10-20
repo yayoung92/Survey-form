@@ -8,7 +8,14 @@ public class Survey {
 	private String sDateTime;
 	private List<Question> qQuestionslist;
 	private List<Options> oOptionslist;
+	private List<Answer> aAnswerlist;
 	
+	public List<Answer> getaAnswerlist() {
+		return aAnswerlist;
+	}
+	public void setaAnswerlist(List<Answer> aAnswerlist) {
+		this.aAnswerlist = aAnswerlist;
+	}
 	public List<Options> getoOptionslist() {
 		return oOptionslist;
 	}

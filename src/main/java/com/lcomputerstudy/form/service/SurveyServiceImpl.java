@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
-import com.lcomputerstudy.form.domain.Response;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
+import com.lcomputerstudy.form.domain.ResponseVO;
 import com.lcomputerstudy.form.domain.Survey;
 import com.lcomputerstudy.form.mapper.SurveyMapper;
 
@@ -117,49 +117,33 @@ public class SurveyServiceImpl implements SurveyService {
 	
 	@Override
 	public void insertAnswer(Answer answer) {
-
 		surveymapper.insertAnswer(answer);
-	}
-	
-	@Override
-	public void insertResponse(Response response) {
-		surveymapper.insertResponse(response);
-		int sId = response.getsIdx();
-		
-		for(Answer answer : response.getaAnswerlist()) {
-			answer.setsIdx(sId);
-			surveymapper.insertAnswer(answer);
-		}
-
-	}
-	
-	@Override
-	public int viewAnswer(Answer answer) {
-		return surveymapper.viewAnswer(answer);
-	}
-	
-	@Override
-	public List<Answer> viewAnswers(int sIdx) {
-		return surveymapper.viewAnswers(sIdx);
 	}
 	
 	@Override
 	public void insertallAnswer(Allanswer allanswer) {
 		surveymapper.insertallAnswer(allanswer);
+		int sId = allanswer.getsIdx();
+		
+		for(Answer answer : allanswer.getaAnswerlist()) {
+			answer.setsIdx(sId);
+			surveymapper.insertAnswer(answer);
+			surveymapper.updateoId(answer);
+		}
 	}
 	
 	@Override
-	public Map<String, Object> get(Answer answer) {
-		return surveymapper.get(answer);
+	public void updateoId(Answer answer) {
+		surveymapper.updateoId(answer);
 	}
 	
 	@Override
-	public List<Integer> selectAnswerlist(Answer answer) {
-		return surveymapper.selectAnswerlist(answer);
+	public List<Answer> selectAnswerList(int sIdx) {
+		return surveymapper.selectAnswerList(sIdx);
 	}
 	
 	@Override
-	public List<Answer> selectAnswerList(int sIdx, Answer answer) {
-		return surveymapper.selectAnswerList(sIdx, answer);
+	public List<ResponseVO> selectAnswerLists(int sIdx) {
+		return surveymapper.selectAnswerLists(sIdx);
 	}
 }

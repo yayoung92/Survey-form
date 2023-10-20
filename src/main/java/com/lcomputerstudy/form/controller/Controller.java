@@ -23,7 +23,7 @@ import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
-import com.lcomputerstudy.form.domain.Response;
+import com.lcomputerstudy.form.domain.ResponseVO;
 import com.lcomputerstudy.form.domain.Survey;
 import com.lcomputerstudy.form.service.SurveyService;
 import com.lcomputerstudy.form.service.UserService;
@@ -89,12 +89,14 @@ public class Controller {
 	public String denied(Model model) {
 		return "/denied";
 	}
+	
 	@RequestMapping("/surveylist")
 	public String getsurveylist(Model model) {
 		List<Survey> list = surveyservice.selectSurvey();
 		model.addAttribute("list", list);
 		return "/surveylist";
 	}
+	
 	@RequestMapping("/resultSurvey")
 	public String insquesi(@RequestParam("sIdx") int sIdx, Model model) {
 		Survey survey = surveyservice.viewSurvey(sIdx);
@@ -103,58 +105,60 @@ public class Controller {
 		model.addAttribute("survey", survey);
 		model.addAttribute("question", question);
 		model.addAttribute("option", option);
+		
+		List<ResponseVO> a = surveyservice.selectAnswerLists(sIdx);
+
+		String answer = a.toString();
+		System.out.println(a);
 		return "/resultSurvey";
 	}
+	
 	@RequestMapping("/form-view")
 	public String sum(Model model) {
-		return "/form2";
+		return "/surveyform";
 	}
 	
-	@RequestMapping("/aj-insertanswer")
-	public String insertAnswer(Model model, @RequestBody Response response) {
-		surveyservice.insertResponse(response);
-		System.out.println(response.getaAnswer());
-
-		return "/surveylist";
-	}
-	
-	/////// pie chart 보여주기
-	@RequestMapping("/aj-viewAnswer")
-    public String getActionData(@RequestBody Response response, Model model) {
-		int sIdx = response.getsIdx();
-		System.out.println(sIdx);
-    //    surveyservice.selectAnswerList(sIdx, answer);
-    //    model.addAttribute("answer", attributeValue);
-        return "/chart";
-    }
-	
-	@RequestMapping("/aj-chart-data")
-	public String showChart(Model model, Answer answer) {
-		List<Integer> a = surveyservice.selectAnswerlist(answer);
-		String data = a.toString();
-		System.out.println(data);
-		
-		List<Answer> ans = surveyservice.selectAnswerList(150, answer);
-		String data2 = ans.toString();
-		String aa = answer.getoOption();
-		System.out.println(ans);
-		System.out.println(data2);
-		System.out.println("aa: " + aa);
-	
-		model.addAttribute("chartData", data);
-		model.addAttribute("ch", data2);
-		return "/chart";
-	}
-	
-	
-	
-	
-	//RequetBody Survey 로 받아서 값 주기
+	//RequetBody Survey 로 받아서 값 주기(설문지 만들기)
 	@RequestMapping("/aj-insert")
 	public String in(@RequestBody Survey survey, Model model) {
 		surveyservice.insertSurvey(survey);
-		return "/form";
+		return "/s_surveylist";
 	}
+	
+	@RequestMapping("/aj-insertanswer")
+	public String insertAnswer(Model model, @RequestBody Allanswer allanswer) {
+		surveyservice.insertallAnswer(allanswer);
+		return "/s_surveylist";
+	}
+	
+	// pie chart 보여주기
+	@RequestMapping("/aj-chart//")
+    public String showChart(@RequestBody Survey survey, Model model) {
+		int sIdx = survey.getsIdx();
+		String sTitle = survey.getsTitle();
+		List<Answer> a = surveyservice.selectAnswerList(sIdx);
+		List<Question> q = survey.getqQuestionslist();
+		System.out.println(q);
+		String answer = a.toString();
+		
+		model.addAttribute("answer", answer);
+		model.addAttribute("title", sTitle);
+        return "/chart";
+    }
+	
+	@RequestMapping("/aj-chart")	//질문별로 파이차트 보여주기
+    public String showChart2(@RequestBody ResponseVO responsevo, Model model) {
+		
+		List<ResponseVO> a = surveyservice.selectAnswerLists(150);
+
+		String answer = a.toString();
+		System.out.println(answer);
+	//	model.addAttribute("answer", answer);
+        return "/resultSurvey";
+    }
+
+	
+
 	
 	//RequestBody Map 으로 받기
 	@RequestMapping("/aj-insertsurvey")

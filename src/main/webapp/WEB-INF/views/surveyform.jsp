@@ -56,6 +56,7 @@
 }
 </style>
 <body>
+<div id="s_surveylist">
 	<div class="wrap">
 		<div class="form" >
 			<h1>설문조사</h1>
@@ -64,28 +65,12 @@
 			<p class="lead">
 			<button type="button" class="addQuestion">질문 시작하기</button>
 		</div>
-	 	<div class="form-box" >
-			<div class="question">
-				<input class="input" type="text" name="q_title" placeholder="질문">
-				<select class="QuestionType" name="q_type">
-					<option value="none">== 선택 ==</option>
-					<option value="1">주관식</option>
-					<option value="2">객관식</option>
-					<option value="3">장문형</option>
-				</select>
-				<hr>
-				<button type="button" class="addQuestion">질문 추가</button>
-				
-			</div>
-			<div style="display: none;">
-				<button type="button" class="delete">취소</button>
-			</div>
-		</div>
 	</div>
 	<div class="button-container">
 		<a id="btn_survey" class="custom-button" type="button" href="/surveylist">설문지 만들기</a>
 	</div>
-	
+	<a href="/surveylist" type="button" >돌아가기</a>
+</div>
 <script>
 $(document).on('click', '.delete', function() {
 	$(this).parent().parent().toggle();
@@ -196,6 +181,9 @@ $(document).on('click', '#btn_survey', function () {
 			"sTitle": title,	
 			"qQuestionslist": questions
 		}),
+	})
+	.done(function(msg){
+		$('#s_surveylist').html(msg);
 	});
 
     console.log(title, questions)

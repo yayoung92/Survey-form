@@ -9,7 +9,7 @@ import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
-import com.lcomputerstudy.form.domain.Response;
+import com.lcomputerstudy.form.domain.ResponseVO;
 import com.lcomputerstudy.form.domain.Survey;
 
 @Mapper
@@ -42,16 +42,10 @@ public interface SurveyMapper {
 	
 	public void insertallAnswer(Allanswer allanswer);
 	
-	public void insertResponse(Response response);
+	public void updateoId(Answer answer);
 	
-	public int viewAnswer(Answer answer);
+	public List<Answer> selectAnswerList(int sIdx);
 	
-	public List<Answer> viewAnswers(int sIdx);
-	
-	public Map<String, Object> get(Answer answer);
-	
-	public List<Integer> selectAnswerlist(Answer answer);
-	
-	public List<Answer> selectAnswerList(int sIdx, Answer answer);
+	public List<ResponseVO> selectAnswerLists(int sIdx);
 	
 }

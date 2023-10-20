@@ -130,60 +130,54 @@
 		VALUES (
 			#{oIdx},
         	#{qIdx}, 
-        	#{oOption},
+        	#{aAnswer},
         	#{sIdx}
         )
 	</insert>
-	
-	<select id="viewAnswers" parameterType="Integer" resultType="Answer">
-		SELECT	o_idx as oIdx,
-				s_idx as sIdx,
-				q_idx as qIdx,
-				a_answer as oOption
-		FROM	y_answer
-		WHERE	s_idx = #{sIdx}
-	</select>
-	
-	<select id="viewAnswer" parameterType="Integer" resultType="Answer">
-		SELECT	count(*) as count
-		FROM	y_answer
-		WHERE	s_idx = #{sIdx}
-	</select>
 	
 	<insert id="insertallAnswer">
 		INSERT INTO y_allanswer(
-			a_answer,
+			s_title,
 			s_idx
 		)
 		VALUES (
-        	#{aAnswer},
+        	#{sTitle},
         	#{sIdx}
         )
 	</insert>
 	
-	<insert id="insertResponse">
-		INSERT INTO y_allanswer(
-			a_answer,
-			s_idx
+	<update id="updateoId">
+		UPDATE y_answer
+		SET	o_idx = (
+			SELECT	o_idx
+			FROM	y_option
+			WHERE	y_option.o_option = y_answer.a_answer and y_answer.q_idx = y_option.q_idx
+			LIMIT 1
 		)
-		VALUES (
-        	#{aAnswer},
-        	#{sIdx}
-        )
-	</insert>
-	
-	<select id="selectAnswerlist">
-		SELECT	count(*) as count
-		FROM	y_answer
-		GROUP BY q_idx		
-	</select>
+	</update>
 	
 	<select id="selectAnswerList">
-		SELECT	a_answer as oOption, count(*) as count
+		SELECT	a_answer as aAnswer, count(*) as count
 		FROM	y_answer
-		WHERE	s_idx AND o_idx != 0
-		GROUP BY o_idx, a_answer
-		ORDER BY count ASC	
+		WHERE	s_idx = #{sIdx}
+		GROUP BY a_answer, o_idx
+	</select>
+	
+	<select id="selectAnswerLists">
+		SELECT	ta.a_answer as aAnswer, count(*) as COUNT, tb.q_question as qQuestion, ta.s_idx as sIdx
+		FROM	y_answer as ta
+		LEFT JOIN y_question as tb
+		ON ta.s_idx = tb.s_idx
+		WHERE	ta.s_idx = #{sIdx} and ta.q_idx = (
+			SELECT	tb.q_idx
+			FROM	y_question
+			WHERE	ta.q_idx = tb.q_idx
+			GROUP BY tb.q_idx
+			ORDER BY tb.q_idx ASC
+			LIMIT 1
+			)
+		GROUP BY ta.o_idx, ta.a_answer
+		ORDER BY ta.q_idx ASC
 	</select>
 </mapper>
 
