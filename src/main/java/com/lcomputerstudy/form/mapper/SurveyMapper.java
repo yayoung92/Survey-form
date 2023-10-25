@@ -48,4 +48,6 @@ public interface SurveyMapper {
 	
 	public List<ResponseVO> selectAnswerLists(int sIdx);
 	
+	public List<Allanswer> getAllanswerList(int sIdx);
+	
 }

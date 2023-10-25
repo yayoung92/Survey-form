@@ -44,4 +44,8 @@ public interface SurveyService {
 	public List<Answer> selectAnswerList(int sIdx);
 	
 	public List<ResponseVO> selectAnswerLists(int sIdx);
+	
+	public List<Allanswer> getAllanswerList(int sIdx);
+	
+	public void getallanswer(Allanswer allanswer);
 }

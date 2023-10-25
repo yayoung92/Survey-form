@@ -7,7 +7,22 @@ public class Allanswer {
 	private int sIdx;
 	private String sTitle;
 	private List<Answer> aAnswerlist;
+	private String qQuestion;
+	private String aAnswer;
+	private int count;
 	
+	public String getaAnswer() {
+		return aAnswer;
+	}
+	public void setaAnswer(String aAnswer) {
+		this.aAnswer = aAnswer;
+	}
+	public String getqQuestion() {
+		return qQuestion;
+	}
+	public void setqQuestion(String qQuestion) {
+		this.qQuestion = qQuestion;
+	}
 	public List<Answer> getaAnswerlist() {
 		return aAnswerlist;
 	}
@@ -32,10 +47,19 @@ public class Allanswer {
 	public void setsTitle(String sTitle) {
 		this.sTitle = sTitle;
 	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	@Override
 	public String toString() {
-		return "Allanswer [aaIdx=" + aaIdx + ", sIdx=" + sIdx + ", sTitle=" + sTitle + ", aAnswerlist=" + aAnswerlist
-				+ "]";
+		return "[" +
+                "aAnswer='" + aAnswer + '\'' +
+                ", count=" + count +
+                ']';
 	}
+
 	
 }

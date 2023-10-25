@@ -1,5 +1,7 @@
 package com.lcomputerstudy.form.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -143,7 +145,35 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 	
 	@Override
+	public List<Allanswer> getAllanswerList(int sIdx) {
+		return surveymapper.getAllanswerList(sIdx);
+	}
+	
+	@Override
+	public void getallanswer(Allanswer allanswer) {
+		int sIdx = allanswer.getsIdx();
+		surveymapper.getAllanswerList(sIdx);
+	}
+	
+	@Override
 	public List<ResponseVO> selectAnswerLists(int sIdx) {
-		return surveymapper.selectAnswerLists(sIdx);
+		List<Allanswer> allanswer = surveymapper.getAllanswerList(sIdx);
+		Map<String, List<Allanswer>> group = new HashMap<>();
+		
+		for(Allanswer a : allanswer) {
+			String qQuestion = a.getqQuestion();	
+			group.computeIfAbsent(qQuestion, k -> new ArrayList<>()).add(a);
+		}
+		
+		List<ResponseVO> groupresponseList = new ArrayList<>();
+		
+		for(Map.Entry<String, List<Allanswer>> entry: group.entrySet()) {
+			ResponseVO grouped = new ResponseVO();
+			grouped.setqQuestion(entry.getKey());
+			grouped.setaAnswers(entry.getValue());
+			groupresponseList.add(grouped);
+		}
+		
+		return groupresponseList;
 	}
 }

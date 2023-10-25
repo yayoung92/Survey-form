@@ -107,9 +107,14 @@ public class Controller {
 		model.addAttribute("option", option);
 		
 		List<ResponseVO> a = surveyservice.selectAnswerLists(sIdx);
-
-		String answer = a.toString();
 		System.out.println(a);
+		
+		
+//		List<Allanswer> all = surveyservice.getAllanswerList(sIdx);
+//		System.out.println("all: " + all);
+		
+		model.addAttribute("resoponse", a);
+//		model.addAttribute("all", all);
 		return "/resultSurvey";
 	}
 	
@@ -137,24 +142,14 @@ public class Controller {
 		int sIdx = survey.getsIdx();
 		String sTitle = survey.getsTitle();
 		List<Answer> a = surveyservice.selectAnswerList(sIdx);
-		List<Question> q = survey.getqQuestionslist();
-		System.out.println(q);
+		List<ResponseVO> r = surveyservice.selectAnswerLists(sIdx);
+		
+		System.out.println(r);
 		String answer = a.toString();
 		
 		model.addAttribute("answer", answer);
 		model.addAttribute("title", sTitle);
         return "/chart";
-    }
-	
-	@RequestMapping("/aj-chart")	//질문별로 파이차트 보여주기
-    public String showChart2(@RequestBody ResponseVO responsevo, Model model) {
-		
-		List<ResponseVO> a = surveyservice.selectAnswerLists(150);
-
-		String answer = a.toString();
-		System.out.println(answer);
-	//	model.addAttribute("answer", answer);
-        return "/resultSurvey";
     }
 
 	

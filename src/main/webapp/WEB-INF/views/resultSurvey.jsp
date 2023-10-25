@@ -67,8 +67,13 @@
 }
 </style>
 <body>
-<div id="piechart" style="width: 900px; height: 500px;"></div>
-<div id="piechart2" style="width: 900px; height: 500px;"></div>
+<div id="pie">
+<c:forEach items="${resoponse }" var="resoponse" varStatus="loop">
+	<div id="piechart${loop.index }" style="width: 900px; height: 500px;"></div>
+</c:forEach>
+	<div id="piechart2" style="width: 900px; height: 500px;"></div>
+
+</div>
 	<div class="wrap">
 		<input type="hidden" name="sIdx" value="${survey.sIdx }">
 		<input type="hidden" name="sTitle" value="${survey.sTitle }">
@@ -127,40 +132,56 @@ google.charts.setOnLoadCallback(drawChart);
 google.charts.setOnLoadCallback(drawChart2);
 
 function drawChart() {
-	var data = google.visualization.arrayToDataTable([
-        ['Task', 'Hours per Day'],
-        ['Work',     11],
-        ['Eat',      2],
-        ['Commute',  2],
-        ['Watch TV', 2],
-        ['Sleep',    7]
-      ]);
+	<c:forEach items="${resoponse }" var="resoponse" varStatus="loop">
 
-      var options = {
-        title: 'My Daily Activities'
-      };
+		var data = new google.visualization.DataTable();
+    	data.addColumn('string', 'Task');
+    	data.addColumn('number', 'Hours per Day');
 
-      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    	<c:forEach items="${resoponse.aAnswers}" var="answer">
+        	data.addRow(['${answer.aAnswer}', ${answer.count}]);
+		</c:forEach>
 
-      chart.draw(data, options);
+    	var options = {
+        	title: '${resoponse.qQuestion}'
+    	};
+
+      	var chart = new google.visualization.PieChart(document.getElementById('piechart' + ${loop.index}));
+      	chart.draw(data, options);
+
+	</c:forEach>
 }
 function drawChart2() {
+	var d = ${resoponse};
+	
+	console.log(d);
+	
 	var data = google.visualization.arrayToDataTable([
-        ['Task', 'Hours per Day'],
-        ['Work',     11],
-        ['Eat',      2],
-        ['Commute',  2],
-        ['Watch TV', 2],
-        ['Sleep',    7]
+		['Task', 'Hours per Day'],
+        [d[0][1][0][0], d[0][1][0][1]],
+        [d[0][1][1][0], d[0][1][1][1]]
       ]);
 
       var options = {
-        title: 'My Daily Activities'
+        title: d[0][0]
       };
 
-      var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+    var data2 = google.visualization.arrayToDataTable([
+  		['Task', 'Hours per Day'],
+        [d[0][1][0][0], d[0][1][0][1]],
+        [d[0][1][1][0], d[0][1][1][1]]
+    ]);
 
+    var options2 = {
+    	title: d[0][1]
+    };
+        
+      
+      var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
       chart.draw(data, options);
+
+      var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+      chart2.draw(data2, options2);
 }
 
 /* function drawChart() {
