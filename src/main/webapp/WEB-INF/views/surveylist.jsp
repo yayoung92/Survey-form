@@ -70,10 +70,12 @@
       	<col width="50px">
 		<col width="150px">
 		<col width="200px">
+		<col width="70px">
       	<tr>
       		<td style="background-color:#eeeeee; text-align:center;">번호</td>
       		<td style="background-color:#eeeeee; text-align:center;">제목</td>
       		<td style="background-color:#eeeeee; text-align:center;">등록일</td>
+      		<td style="background-color:#eeeeee; text-align:center;">통계</td>
 
       	</tr>
       	<c:forEach var="list" items="${list }">
@@ -81,6 +83,7 @@
 	      		<td><a href="/resultSurvey?sIdx=${list.sIdx}">${list.sIdx }</a></td>
 	      		<td>${list.sTitle}</td>
 	      		<td>${list.sDateTime}</td>
+	      		<td><a href="/showchart?sIdx=${list.sIdx}">통계</a></td>
 	      	</tr>
       	</c:forEach>
       </table>

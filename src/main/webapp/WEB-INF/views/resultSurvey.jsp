@@ -67,13 +67,6 @@
 }
 </style>
 <body>
-<div id="pie">
-<c:forEach items="${resoponse }" var="resoponse" varStatus="loop">
-	<div id="piechart${loop.index }" style="width: 900px; height: 500px;"></div>
-</c:forEach>
-	<div id="piechart2" style="width: 900px; height: 500px;"></div>
-
-</div>
 	<div class="wrap">
 		<input type="hidden" name="sIdx" value="${survey.sIdx }">
 		<input type="hidden" name="sTitle" value="${survey.sTitle }">
@@ -127,101 +120,6 @@
 	</div>
 <a href="/surveylist" type="button">돌아가기</a>
 <script>
-google.charts.load('current', {'packages': ['corechart']});
-google.charts.setOnLoadCallback(drawChart);
-google.charts.setOnLoadCallback(drawChart2);
-
-function drawChart() {
-	<c:forEach items="${resoponse }" var="resoponse" varStatus="loop">
-
-		var data = new google.visualization.DataTable();
-    	data.addColumn('string', 'Task');
-    	data.addColumn('number', 'Hours per Day');
-
-    	<c:forEach items="${resoponse.aAnswers}" var="answer">
-        	data.addRow(['${answer.aAnswer}', ${answer.count}]);
-		</c:forEach>
-
-    	var options = {
-        	title: '${resoponse.qQuestion}'
-    	};
-
-      	var chart = new google.visualization.PieChart(document.getElementById('piechart' + ${loop.index}));
-      	chart.draw(data, options);
-
-	</c:forEach>
-}
-function drawChart2() {
-	var d = ${resoponse};
-	
-	console.log(d);
-	
-	var data = google.visualization.arrayToDataTable([
-		['Task', 'Hours per Day'],
-        [d[0][1][0][0], d[0][1][0][1]],
-        [d[0][1][1][0], d[0][1][1][1]]
-      ]);
-
-      var options = {
-        title: d[0][0]
-      };
-
-    var data2 = google.visualization.arrayToDataTable([
-  		['Task', 'Hours per Day'],
-        [d[0][1][0][0], d[0][1][0][1]],
-        [d[0][1][1][0], d[0][1][1][1]]
-    ]);
-
-    var options2 = {
-    	title: d[0][1]
-    };
-        
-      
-      var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
-      chart.draw(data, options);
-
-      var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
-      chart2.draw(data2, options2);
-}
-
-/* function drawChart() {
-	let csrfToken = $("meta[name='_csrf']").attr("content");
-
-	let t = [];
-	let sId = [];
-	let q = [];
-	
-	$('.wrap').each(function () {
-		sId = $(this).find('input[name="sIdx"]').val();
-		t = $(this).find('input[name="sTitle"]').val();
-	});
-
-	$('.optionlist').each(function() {
-		let qq = [];
-		let qId = [];
-		qq = $(this).find('input[name="qQueation"]').val(); 
-		qId = $(this).find('input[name="qIdx"]').val(); 
-		
-		q.push({
-			qQuestion: qq 
-		});
-	});
-
-	$.ajax({
-	//	url: 'aj-chart',
-		method: 'POST',
-		headers: {
-	    	"X-CSRF-TOKEN": csrfToken
-	    },
-	    contentType: "application/json",
-	    data: JSON.stringify({"sIdx":sId, "sTitle":t, "qQuestionslist":q})
-	    
-	})
-	.done(function(msg) {
-		$('#piechart').html(msg);
-	});
-}; */
-
 $(document).on('click', '#b_survey', function () {
     let sTitle = $(this).parent().prev().find('input[name="sTitle"]').val();
     let sId = $(this).parent().prev().find('input[name="sIdx"]').val();

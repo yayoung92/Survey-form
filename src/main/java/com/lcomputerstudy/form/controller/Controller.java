@@ -106,15 +106,7 @@ public class Controller {
 		model.addAttribute("question", question);
 		model.addAttribute("option", option);
 		
-		List<ResponseVO> a = surveyservice.selectAnswerLists(sIdx);
-		System.out.println(a);
 		
-		
-//		List<Allanswer> all = surveyservice.getAllanswerList(sIdx);
-//		System.out.println("all: " + all);
-		
-		model.addAttribute("resoponse", a);
-//		model.addAttribute("all", all);
 		return "/resultSurvey";
 	}
 	
@@ -136,19 +128,23 @@ public class Controller {
 		return "/s_surveylist";
 	}
 	
+	//설문조사 통계
+	@RequestMapping("/showchart")
+	public String showchart(@RequestParam("sIdx") int sIdx, Model model) {
+		Survey survey = surveyservice.viewSurvey(sIdx);
+		model.addAttribute("survey", survey);
+		return "/showchart";
+	}
+	
 	// pie chart 보여주기
-	@RequestMapping("/aj-chart//")
+	@RequestMapping("/aj-chart")
     public String showChart(@RequestBody Survey survey, Model model) {
-		int sIdx = survey.getsIdx();
-		String sTitle = survey.getsTitle();
-		List<Answer> a = surveyservice.selectAnswerList(sIdx);
-		List<ResponseVO> r = surveyservice.selectAnswerLists(sIdx);
+		int sId = survey.getsIdx();
 		
-		System.out.println(r);
-		String answer = a.toString();
+		List<ResponseVO> a = surveyservice.selectAnswerLists(sId);
+		System.out.println(a);
 		
-		model.addAttribute("answer", answer);
-		model.addAttribute("title", sTitle);
+		model.addAttribute("resoponse", a);
         return "/chart";
     }
 
