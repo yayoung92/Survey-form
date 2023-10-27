@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <meta name="_csrf" content="${_csrf.token }">
 </head>
 <style>
@@ -40,7 +44,13 @@
 }
 .input {
 	border: none;
-	background-color: lightgrey;
+	width: 400px;
+	height: 30px;
+	font-size: 15px;
+}
+.output {
+	border: none;
+	text-background: lightgray;
 	width: 400px;
 	height: 30px;
 	font-size: 15px;
@@ -48,29 +58,68 @@
 .sur {
 	width: 500px;
 	height: 50px;
-	font-size: 20px;
+	font-size: 30px;
 	text-dexoration: underline;
 	border: none;
+	display: block;
 	text-align: center;
 	font-weight: bold;
 }
 </style>
 <body>
-<div id="s_surveylist">
+<form action="/updateSruvey" name="survey" method="post"></form>
 	<div class="wrap">
+		<input type="hidden" name="sIdx" value="${survey.sIdx }">
 		<div class="form" >
-			<h1>설문조사</h1>
-			<input type="text" placeholder="설문지 설명" class="sur" name="survey">
+			<h1 style="text-align: center; font-size:20px;">설문조사</h1>
+			<input type="text" class="sur" name="sTitle" value="${survey.sTitle }">
 			<hr class="my-4">
 			<p class="lead">
-			<button type="button" class=질문 시작하기</button>
+			<div class="button-container">
+				<button type="button" class="addQuestion">질문 추가하기</button>
+			</div>
 		</div>
+		<c:forEach items="${question }" var="question">
+			<div class="form-box" >
+				 <div class="question">
+				 	<input type="hidden" name="qIdx" value="${question.qIdx}">
+					<input type="text" class="input" name="qQuestion" value="${question.qQuestion }">
+					<input type="text" class="input" name="qType" value="${question.qType }">
+				</div>
+				<hr>
+				<div class="answerQuestion">
+					<c:choose>
+						<c:when test="${question.qType eq 3 }">
+							<textarea rows="5" cols="50" class="output" name="aAnswer" style="width: 500px; height: 30px;" placeholder="100자 내외"></textarea>
+						</c:when>
+						<c:when test="${question.qType eq 1 }">
+							<input class="output" type="text" name="aAnswer" >
+						</c:when>
+					</c:choose>
+					<c:choose>
+						<c:when test="${question.qType eq 2 }">	 
+							<div class="optionlist">
+							    <c:forEach items="${option}" var="option">
+							    	<c:choose>
+							        	<c:when test="${question.qIdx eq option.qIdx}">	
+							        		<input type="hidden" name="qQueation" value="${question.qQuestion }">
+							                <input type="hidden" name="qIdx" value="${option.qIdx}">
+							                <input type="hidden" name="oIdx" value="${option.oIdx}">
+								            <input type='checkbox'><input type="text" name="oOption" value="${option.oOption}"><br>
+								        </c:when>
+								    </c:choose>
+								</c:forEach>
+							</div>
+						</c:when>
+					</c:choose>
+				</div>
+			</div>
+		</c:forEach>
 	</div>
 	<div class="button-container">
-		<a id="btn_survey" class="custom-button" type="button" href="/surveylist">설문지 만들기</a>
+		<a id="update_survey" class="custom-button" type="button" href="/surveylist">설문지 수정하기</a>
 	</div>
-	<a href="/surveylist" type="button" >돌아가기</a>
-</div>
+<a href="/surveylist" type="button">돌아가기</a>
 <script>
 $(document).on('click', '.delete', function() {
 	$(this).parent().parent().toggle();
@@ -78,8 +127,8 @@ $(document).on('click', '.delete', function() {
 $(document).on('click', '.addQuestion', function() {
     var newFormBox = $('<div class="form-box"></div>');
     var newQuestion = $('<div class="question"></div>');
-    var titleInput = $('<input class="input" type="text" name="q_title" placeholder="질문">');
-    var selectBox = $('<select clsee="QuestionType" name="q_type"><option value="none">== 선택 ==</option><option value="1">주관식</option><option value="2">객관식</option><option value="3">장문형</select>');
+    var titleInput = $('<input class="input" type="text" name="qQuestion" placeholder="질문">');
+    var selectBox = $('<select clsee="QuestionType" name="qType"><option value="none">== 선택 ==</option><option value="1">주관식</option><option value="2">객관식</option><option value="3">장문형</select>');
     var addButton = $('<hr><button type="button" class="addQuestion">질문 추가</button>');
     var deleteButton = $('<button type="button" class="delete">취소</button>');
 
@@ -132,7 +181,6 @@ $(document).on('change', '.QuestionType', function() {
     }
 
 });
-
 $(document).on('click', '.addExample', function () {
 	var optionInput = $('<div class="form2"><input type="checkbox"><input type="text" placeholder="옵션 추가" class="example" name="q_ar[]">');
     var deleteButton = $('<button type="button" class="deleteExample">보기 삭제</button><br>');
@@ -145,48 +193,53 @@ $(document).on('click', '.deleteExample', function () {
     $(this).prev().remove();
     $(this).remove()
 });
-$(document).on('click', '#btn_survey', function () { 
-    let title = $(this).parent().prev().find('input[name="survey"]').val();
+
+$(document).on('click', '#update_survey', function () {
+    let sTitle = $(this).parent().prev().find('input[name="sTitle"]').val();
+    let sId = $(this).parent().prev().find('input[name="sIdx"]').val();
     let csrfToken = $("meta[name='_csrf']").attr("content");
     let questions = [];
-    let items = [];
-
-    $('.question').each(function () {
-        let q_question = $(this).find('input[name="q_title"]').val();
-        let q_type = $(this).find('select[name="q_type"]').val();
+   	let options = [];
+    
+    $('.form-box').each(function () {
+        let q_idx = $(this).find('input[name="qIdx"]').val();
+        let q_question = $(this).find('input[name="qQuestion"]').val();
+        let q_type = $(this).find('input[name="qType"]').val();
+        
+        
         let o_option = [];
 		
         if(q_type === '2') {
-        	$(this).find('input[name="q_ar[]"]').each(function () {
+        	$(this).find('input[name="oOption"]').each(function () {
         		o_option.push($(this).val());
             });
         }
         
         questions.push({
+            qIdx: q_idx,
             qQuestion: q_question,
             qType: Number(q_type),
-            oOption: o_option       
+            oOption: o_option    
         });
+        
 
     });
-
+    
     $.ajax({
 		method: "POST",
-		url: "aj-insert",
+		url: "aj-updatesurvey",
 		headers: {
-			"X-CSRF-TOKEN": csrfToken
-		},
-		contentType: "application/json",
-		data: JSON.stringify({
-			"sTitle": title,	
-			"qQuestionslist": questions
-		}),
-	})
-	.done(function(msg){
-		$('#s_surveylist').html(msg);
-	});
+    		"X-CSRF-TOKEN": csrfToken
+    	},
+    	contentType: "application/json",
+    	data: JSON.stringify({"sIdx":sId, "sTitle":sTitle, "qQuestionslist": questions})
 
-    console.log(title, questions)
+    })
+    .done(function(msg){
+		$('.wrap').html(msg);
+    });
+
+    console.log(questions)
 });
 </script>
 </body>

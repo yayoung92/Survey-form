@@ -48,4 +48,10 @@ public interface SurveyService {
 	public List<Allanswer> getAllanswerList(int sIdx);
 	
 	public void getallanswer(Allanswer allanswer);
+	
+	public void updateSurvey(Survey survey);
+	
+	public void updateQuestion(Question question);
+	
+	public void updateOption(Options options);
 }

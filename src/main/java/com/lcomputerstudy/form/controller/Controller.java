@@ -148,8 +148,24 @@ public class Controller {
         return "/chart";
     }
 
+	//설문지 수정
+	@RequestMapping("/surveyupdate")
+	public String viewUpdate(@RequestParam("sIdx") int sIdx, Model model) {
+		Survey survey = surveyservice.viewSurvey(sIdx);
+		List<Question> question = surveyservice.viewQuestion(sIdx);
+		List<Options> option = surveyservice.viewOption(sIdx);
+		model.addAttribute("survey", survey);
+		model.addAttribute("question", question);
+		model.addAttribute("option", option);
+		return "/update";
+	}
 	
-
+	//설문지 수정 값 보내기
+	@RequestMapping("/aj-updatesurvey")
+	public String surveyUpdate(@RequestBody Survey survey, Model model) {
+		surveyservice.updateSurvey(survey);
+		return "s_resultSurvey";
+	}
 	
 	//RequestBody Map 으로 받기
 	@RequestMapping("/aj-insertsurvey")

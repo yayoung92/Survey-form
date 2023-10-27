@@ -50,4 +50,10 @@ public interface SurveyMapper {
 	
 	public List<Allanswer> getAllanswerList(int sIdx);
 	
+	public void updateSurvey(Survey survey);
+	
+	public void updateQuestion(Question question);
+	
+	public void updateOption(Options options);
+	
 }

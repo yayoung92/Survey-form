@@ -55,10 +55,7 @@ public class Allanswer {
 	}
 	@Override
 	public String toString() {
-		return "[" +
-                "aAnswer='" + aAnswer + '\'' +
-                ", count=" + count +
-                ']';
+		return "[" + "aAnswer="+ "\"" + aAnswer + "\"" + ", count=" + count + "]";
 	}
 
 	

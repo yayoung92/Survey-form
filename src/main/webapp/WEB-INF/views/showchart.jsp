@@ -14,45 +14,21 @@
 </head>
 <body>
 <h1>설문조사 통계</h1>
-	<form action="/showchart" name="survey">
-		<div style="text-align: center; font-weight: bold; font-size: 30px;">${survey.sIdx}번 : < ${survey.sTitle } ></div>
-		<div class="wrap">
+<form action="/showchart" name="survey">
+	<div style="text-align: center; font-weight: bold; font-size: 30px;">${survey.sIdx}번 : < ${survey.sTitle } ></div>
+	<div class="wrap">
 		<input type="hidden" name="sIdx" value="${survey.sIdx}">
-		</div>
-		<!--<c:forEach items="${resoponse }" var="resoponse" varStatus="loop">
-			<div id="piechart${loop.index }" style="width: 900px; height: 500px;"></div>
-		</c:forEach> -->
-		<div id="pie">
-			<div id="piechart2" style="width: 900px; height: 500px;"></div>
-			<div id="piechart3" style="width: 900px; height: 500px;"></div>
-		</div>
-	</form>
+	</div>
+	<div id="pie" style="text-align: center;">
+		<div id="piechart${loop.index }" style="width: 900px; height: 500px; text-align: center;"></div>
+	</div>
+</form>
+<a href="/surveylist" type="button">돌아가기</a>
 <script>
 google.charts.load('current', {'packages': ['corechart']});
-//google.charts.setOnLoadCallback(drawChart);
-google.charts.setOnLoadCallback(drawChart2);
+google.charts.setOnLoadCallback(drawChart);
 
-/*function drawChart() {
-	<c:forEach items="${resoponse }" var="resoponse" varStatus="loop">
-
-		var data = new google.visualization.DataTable();
-    	data.addColumn('string', 'Task');
-    	data.addColumn('number', 'Hours per Day');
-
-    	<c:forEach items="${resoponse.aAnswers}" var="answer">
-        	data.addRow(['${answer.aAnswer}', ${answer.count}]);
-		</c:forEach>
-
-    	var options = {
-        	title: '${resoponse.qQuestion}'
-    	};
-
-      	var chart = new google.visualization.PieChart(document.getElementById('piechart' + ${loop.index}));
-      	chart.draw(data, options);
-
-	</c:forEach>
-} */
-function drawChart2() {
+function drawChart() {
 	let csrfToken = $("meta[name='_csrf']").attr("content");
 	let sId = [];
 	

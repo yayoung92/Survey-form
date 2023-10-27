@@ -9,21 +9,7 @@ public class Survey {
 	private List<Question> qQuestionslist;
 	private List<Options> oOptionslist;
 	private List<Answer> aAnswerlist;
-	private List<ResponseVO> responsevo;
-	private List<Allanswer> aAllanswer;
 	
-	public List<Allanswer> getaAllanswer() {
-		return aAllanswer;
-	}
-	public void setaAllanswer(List<Allanswer> aAllanswer) {
-		this.aAllanswer = aAllanswer;
-	}
-	public List<ResponseVO> getResponsevo() {
-		return responsevo;
-	}
-	public void setResponsevo(List<ResponseVO> responsevo) {
-		this.responsevo = responsevo;
-	}
 	public List<Answer> getaAnswerlist() {
 		return aAnswerlist;
 	}
@@ -63,9 +49,7 @@ public class Survey {
 	@Override
 	public String toString() {
 		return "Survey [sIdx=" + sIdx + ", sTitle=" + sTitle + ", sDateTime=" + sDateTime + ", qQuestionslist="
-				+ qQuestionslist + ", oOptionslist=" + oOptionslist + ", aAnswerlist=" + aAnswerlist + ", responsevo="
-				+ responsevo + ", aAllanswer=" + aAllanswer + "]";
+				+ qQuestionslist + ", oOptionslist=" + oOptionslist + ", aAnswerlist=" + aAnswerlist + "]";
 	}
-
 
 }

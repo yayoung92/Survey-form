@@ -7,75 +7,38 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<div id="pie">
-	<div id="piechart2" style="width: 900px; height: 500px;"></div>
-	<div id="piechart3" style="width: 900px; height: 500px;"></div>
+<div id="pie" style="text-align: center;">
+	<c:forEach var="resoponse" items="${resoponse }" varStatus="loop">
+		<div id="piechart${loop.index}" style="width: 900px; height: 500px; text-align: center;"></div>
+	</c:forEach>
 </div>
 
 <script>
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
-google.charts.setOnLoadCallback(drawChart2);
 
-function drawChart(resoponse) {
 
-    var data2 = google.visualization.arrayToDataTable(${resoponse});
-    var options2 = {
-    	title: resoponse
-    };
-    console.log(data2);
-    var chart2 = new google.visualization.PieChart(document.getElementById('piechart3'));
-    chart2.draw(data2, options2);
-}
-
-function drawChart2() {
+function drawChart() {
 	var d = ${resoponse};
-
-	var data = google.visualization.arrayToDataTable([
-  		['aAnswer', 'count'],
-        [d[0][1][0][0], d[0][1][0][1]],
-        [d[0][1][1][0], d[0][1][1][1]],
-        [d[0][1][2][0], d[0][1][2][1]]
-    ]);
-    var options = {
-    	title: d[0][0]
-    };
-    var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
-    chart.draw(data, options);
-    console.log(data);	
-}
-
-/*function drawChart() {
-
-    	let jsonString = '${answer}';
-   	 	let dataArray = JSON.parse(jsonString);
-   	 
-   	 	console.log(dataArray);
-
-   	 	let jsonString2 = '${question}';
-	 	let dataArray2 = JSON.parse(jsonString2);
-	 
-	 	console.log(dataArray2);
-   	 
-   	 	let data = new google.visualization.DataTable();
-   	 	data.addColumn('string', 'aAnswer');
-   	 	data.addColumn('number', 'count');
-
-   		for (let i = 0; i < dataArray.length; i++) {
-        	let item = dataArray[i];
-        	data.addRow([
-            	item.aAnswer, item.count
-            ]);
-		}
-       
-   		var options = {
-   			title: '${title}'
-   		};
-
-   		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-   		chart.draw(data, options);
-}
-*/
-
+	console.dir(d);
+	<c:forEach var="resoponse" items="${resoponse }" varStatus="loop">
+		var d = ${resoponse};
+		console.log(d);
 	
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Task');
+		data.addColumn('number', 'Hours per Day');
+	
+		<c:forEach items="${resoponse.aAnswers}" var="answer">
+	    	data.addRow(['${answer.aAnswer}', ${answer.count}]);
+		</c:forEach>
+	    
+	    var options = {
+	    	title: '${resoponse.qQuestion}'
+	    };
+	    var chart = new google.visualization.PieChart(document.getElementById('piechart' +${loop.index}));
+	    chart.draw(data, options);
+    </c:forEach>	
+}
+
 </script>

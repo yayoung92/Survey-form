@@ -195,5 +195,27 @@
 		GROUP BY ta.o_idx, ta.a_answer
 		ORDER BY ta.q_idx ASC
 	</select>
+	
+	<update id="updateSurvey" parameterType="Survey">
+		UPDATE	y_survey
+		SET		s_title = #{sTitle},
+				s_datetime = now()	
+		WHERE	s_idx = #{sIdx}
+	</update>
+	
+	<update id="updateQuestion" parameterType="Question">
+		UPDATE	y_question
+		SET		q_type = #{qType},
+				q_question = #{qQuestion}	
+		WHERE	s_idx = #{sIdx} and q_idx = #{qIdx}
+	</update>
+	
+	<update id="updateOption" parameterType="Options">
+		UPDATE	y_option
+		SET		o_option = #{oOption},
+				s_idx = #{sIdx},
+				q_idx = #{qIdx}
+		WHERE	s_idx = #{sIdx} and o_idx = #{oIdx}
+	</update>
 </mapper>
 

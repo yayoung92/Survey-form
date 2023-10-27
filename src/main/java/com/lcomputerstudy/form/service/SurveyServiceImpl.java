@@ -176,4 +176,33 @@ public class SurveyServiceImpl implements SurveyService {
 		
 		return groupresponseList;
 	}
+	
+	@Override
+	public void updateSurvey(Survey survey) {
+		surveymapper.updateSurvey(survey);
+		int sId = survey.getsIdx();
+		for(Question question : survey.getqQuestionslist()) {
+			question.setsIdx(sId);
+			surveymapper.updateQuestion(question);
+			
+			if(question.getqType() ==2) {
+				int qId = question.getqIdx();
+				for(Options options : question.getoOption()) {
+					options.setsIdx(sId);
+					options.setqIdx(qId);
+					surveymapper.updateOption(options);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void updateQuestion(Question question) {
+		surveymapper.updateQuestion(question);
+	}
+	
+	@Override
+	public void updateOption(Options options) {
+		surveymapper.updateOption(options);
+	}
 }
