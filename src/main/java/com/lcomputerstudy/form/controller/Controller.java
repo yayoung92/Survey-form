@@ -132,7 +132,10 @@ public class Controller {
 	@RequestMapping("/showchart")
 	public String showchart(@RequestParam("sIdx") int sIdx, Model model) {
 		Survey survey = surveyservice.viewSurvey(sIdx);
+		List<Question> question = surveyservice.viewQuestion(sIdx);
+		
 		model.addAttribute("survey", survey);
+		model.addAttribute("question", question);
 		return "/showchart";
 	}
 	
@@ -140,10 +143,14 @@ public class Controller {
 	@RequestMapping("/aj-chart")
     public String showChart(@RequestBody Survey survey, Model model) {
 		int sId = survey.getsIdx();
+		System.out.println("survey: " + survey);
 		
 		List<ResponseVO> a = surveyservice.selectAnswerLists(sId);
-		System.out.println(a);
 		
+		List<Answer> answer = surveyservice.selectAnswerList(sId);
+		System.out.println("ss: " + answer);
+		System.out.println("a:" + a);
+		model.addAttribute("ss", answer);
 		model.addAttribute("resoponse", a);
         return "/chart";
     }
@@ -166,6 +173,8 @@ public class Controller {
 		surveyservice.updateSurvey(survey);
 		return "s_resultSurvey";
 	}
+	
+	
 	
 	//RequestBody Map 으로 받기
 	@RequestMapping("/aj-insertsurvey")

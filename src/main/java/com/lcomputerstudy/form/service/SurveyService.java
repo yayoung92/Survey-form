@@ -35,6 +35,8 @@ public interface SurveyService {
 	
 	public List<Options> viewOption(int sIdx);
 	
+	public List<Answer> viewAnswer(int sIdx);
+	
 	public void insertAnswer(Answer answer);
 	
 	public void insertallAnswer(Allanswer allanswer);
@@ -54,4 +56,6 @@ public interface SurveyService {
 	public void updateQuestion(Question question);
 	
 	public void updateOption(Options options);
+	
+	public Map<String, List<Answer>> groupAnswersByQIds(int sId);
 }

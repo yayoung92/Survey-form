@@ -38,6 +38,8 @@ public interface SurveyMapper {
 	
 	public List<Options> viewOption(int sIdx);
 	
+	public List<Answer> viewAnswer(int sIdx);
+	
 	public void insertAnswer(Answer answer);
 	
 	public void insertallAnswer(Allanswer allanswer);

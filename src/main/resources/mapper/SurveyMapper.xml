@@ -120,6 +120,16 @@
 		WHERE	s_idx = #{sIdx}
 	</select>
 	
+	<select id="viewAnswer" parameterType="Integer" resultType="Answer">
+		SELECT	o_idx as oIdx,
+				s_idx as sIdx,
+				q_idx as qIdx,
+				a_answer as aAnswer,
+				a_id as aId
+		FROM	y_answer
+		WHERE	s_idx = #{sIdx}
+	</select>
+	
 	<insert id="insertAnswer" parameterType="Answer">
 		INSERT INTO y_answer(
 			o_idx,
@@ -157,10 +167,19 @@
 	</update>
 	
 	<select id="selectAnswerList">
-		SELECT	a_answer as aAnswer, count(*) as count
-		FROM	y_answer
-		WHERE	s_idx = #{sIdx}
-		GROUP BY a_answer, o_idx
+		SELECT	ta.a_answer as aAnswer, count(*) as COUNT, tb.q_question as qQuestion, ta.s_idx as sIdx
+		FROM	y_answer as ta
+		LEFT JOIN y_question as tb
+		ON ta.s_idx = tb.s_idx
+		WHERE	ta.s_idx = #{sIdx} and ta.q_idx = (
+			SELECT	tb.q_idx
+			FROM	y_question
+			WHERE	ta.q_idx = tb.q_idx
+			GROUP BY tb.q_idx
+			ORDER BY tb.q_idx ASC
+			)
+		GROUP BY qQuestion,ta.o_idx
+		ORDER BY ta.q_idx ASC
 	</select>
 	
 	<select id="getAllanswerList">

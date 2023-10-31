@@ -33,7 +33,7 @@ public class ResponseVO {
 	}
 	@Override
 	public String toString() {
-		return "[" + "qQuestion=" + "\"" + qQuestion + "\"" + ", aAnswers=" + aAnswers + "]";
+		return "aAnswers=" + aAnswers;
 	}
 
 

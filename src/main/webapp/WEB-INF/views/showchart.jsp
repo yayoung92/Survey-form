@@ -20,7 +20,18 @@
 		<input type="hidden" name="sIdx" value="${survey.sIdx}">
 	</div>
 	<div id="pie" style="text-align: center;">
-		<div id="piechart${loop.index }" style="width: 900px; height: 500px; text-align: center;"></div>
+		<c:forEach var="question" items="${question}">
+			
+				<c:choose>
+					<c:when test="${question.qType eq 2 }">
+						<div id="piechart" style="width: 900px; height: 500px; text-align: center;">
+							<input type="hidden" name="qQuestion" value="${question.qQuestion }">
+							<input type="hidden" name="qIdx" value="${question.qIdx }">
+						</div>
+					</c:when>
+				</c:choose>
+		
+		</c:forEach>
 	</div>
 </form>
 <a href="/surveylist" type="button">돌아가기</a>
@@ -30,11 +41,7 @@ google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
 	let csrfToken = $("meta[name='_csrf']").attr("content");
-	let sId = [];
-	
-	$('.wrap').each(function () {
-		sId = $(this).find('input[name="sIdx"]').val();
-	});
+	let sId = $('input[name="sIdx"]').val();
 
     $.ajax({
 		method: "POST",
@@ -47,7 +54,7 @@ function drawChart() {
 
     })
     .done(function(msg){
-		$('#pie').html(msg);
+		$('#piechart').html(msg);
     });
 }
 </script>	
