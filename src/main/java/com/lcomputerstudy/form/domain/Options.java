@@ -5,6 +5,7 @@ public class Options {
 	private int qIdx;		//객관식 type 번호
 	private String oOption;	//객관식 질문
 	private int sIdx;
+	private int count;
 	
 	public Options(String oOption) {
 		this.oOption = oOption;
@@ -32,5 +33,17 @@ public class Options {
 	}
 	public void setoOption(String oOption) {
 		this.oOption = oOption;
-	} 
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	@Override
+	public String toString() {
+		return "[qIdx=" + qIdx + ", oOption=" + "\"" + oOption + "\"" + ", sIdx=" + sIdx + ", count="
+				+ count + "]";
+	}
+	
 }

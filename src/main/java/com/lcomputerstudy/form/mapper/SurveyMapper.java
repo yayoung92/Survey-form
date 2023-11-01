@@ -46,7 +46,7 @@ public interface SurveyMapper {
 	
 	public void updateoId(Answer answer);
 	
-	public List<Answer> selectAnswerList(int sIdx);
+	public List<Options> selectAnswerList(int sIdx);
 	
 	public List<ResponseVO> selectAnswerLists(int sIdx);
 	

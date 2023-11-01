@@ -167,19 +167,18 @@
 	</update>
 	
 	<select id="selectAnswerList">
-		SELECT	ta.a_answer as aAnswer, count(*) as COUNT, tb.q_question as qQuestion, ta.s_idx as sIdx
-		FROM	y_answer as ta
-		LEFT JOIN y_question as tb
-		ON ta.s_idx = tb.s_idx
-		WHERE	ta.s_idx = #{sIdx} and ta.q_idx = (
-			SELECT	tb.q_idx
-			FROM	y_question
-			WHERE	ta.q_idx = tb.q_idx
-			GROUP BY tb.q_idx
-			ORDER BY tb.q_idx ASC
-			)
-		GROUP BY qQuestion,ta.o_idx
-		ORDER BY ta.q_idx ASC
+		SELECT  ta.s_idx as sIdx, ta.q_idx as qIdx, ta.o_option as oOption, count
+		FROM			y_option ta
+		LEFT JOIN	
+				(
+				SELECT		ta.s_idx as sIdx, ta.q_idx as qIdx, ta.o_idx, COUNT(tb.o_idx) count
+				FROM		y_option ta
+				LEFT JOIN	y_answer tb ON ta.o_idx = tb.o_idx
+				GROUP BY 	ta.o_idx, ta.q_idx, ta.s_idx
+				) tb ON ta.o_idx = tb.o_idx
+		WHERE	1=1
+		AND 	ta.s_idx = #{sIdx}
+		AND		ta.q_idx = 216
 	</select>
 	
 	<select id="getAllanswerList">

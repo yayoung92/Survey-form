@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <meta name="_csrf" content="${_csrf.token }">
+
 </head>
 <body>
 <h1>설문조사 통계</h1>
@@ -24,14 +25,17 @@
 			
 				<c:choose>
 					<c:when test="${question.qType eq 2 }">
+						
 						<div id="piechart" style="width: 900px; height: 500px; text-align: center;">
 							<input type="hidden" name="qQuestion" value="${question.qQuestion }">
 							<input type="hidden" name="qIdx" value="${question.qIdx }">
 						</div>
+						
 					</c:when>
 				</c:choose>
 		
 		</c:forEach>
+		
 	</div>
 </form>
 <a href="/surveylist" type="button">돌아가기</a>
@@ -40,23 +44,32 @@ google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
-	let csrfToken = $("meta[name='_csrf']").attr("content");
-	let sId = $('input[name="sIdx"]').val();
+	console.log(${s});
+	
+    var data = google.visualization.arrayToDataTable([
+    	['oOption', 'count'],
+        ['ww', 5]
+      ]);
 
-    $.ajax({
-		method: "POST",
-		url: "aj-chart",
-		headers: {
-    		"X-CSRF-TOKEN": csrfToken
-    	},
-    	contentType: "application/json",
-    	data: JSON.stringify({"sIdx":sId})
+    var options = {
+      title: 'My Daily Activities'
+    };
 
-    })
-    .done(function(msg){
-		$('#piechart').html(msg);
-    });
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(data, options);
 }
+
+
+$.ajax({
+	method: "POST",
+	url: "aj-chart",
+	contentType: "application/json",
+	data: JSON.stringify({"sIdx":sId, "qIdx":qId})
+
+})
+.done(function(msg){
+	$('#piechart').html(msg);
+});
 </script>	
 </body>
 </html>

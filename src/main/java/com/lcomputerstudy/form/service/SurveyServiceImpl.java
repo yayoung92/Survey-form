@@ -145,10 +145,64 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 	
 	@Override
-	public List<Answer> selectAnswerList(int sIdx) {
+	public List<Options> selectAnswerList(int sIdx) {
 		return surveymapper.selectAnswerList(sIdx);
 	}
+/*	@Override
+	public List<Answer> selectAnswerListss(int sIdx) {
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		Object[] rowData = null;
+		
+	    List<Answer> groupedData = surveymapper.selectAnswerList(sIdx);
+
+	    for(int i = 1; i<resultList.size(); i++) {
+	    	Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("aAnswer", rowData[i]);
+	        resultMap.put("count", rowData[i]);
+	        resultList.add(resultMap);
+	    }
+
+	    return groupedData;
+	}
 	
+	@Override
+	public List<String> selectAnswerListz(int sId) {
+	    List<Answer> groupedData = surveymapper.selectAnswerList(sId);
+	    Map<Integer, StringBuilder> groupedMap = new HashMap<>();
+
+	    for (Answer answer : groupedData) {
+	        int qIdx = answer.getqIdx();
+	        StringBuilder resultString = new StringBuilder();
+	        resultString.append("[aAnswer=\"")
+	                    .append(answer.getaAnswer())
+	                    .append("\", count=")
+	                    .append(answer.getCount())
+	                    .append(", qIdx=")
+	                    .append(qIdx)
+	                    .append("]");
+
+	        if (groupedMap.containsKey(qIdx)) {
+	            groupedMap.get(qIdx).append(", ")
+	                              .append("[aAnswer=\"")
+	                              .append(answer.getaAnswer())
+	                              .append("\", count=")
+	                              .append(answer.getCount())
+	                              .append(", qIdx=")
+	                              .append(qIdx)
+	                              .append("]");
+	        } else {
+	            groupedMap.put(qIdx, resultString);
+	        }
+	    }
+
+	    List<String> resultList = new ArrayList<>();
+	    for (StringBuilder stringBuilder : groupedMap.values()) {
+	        resultList.add(stringBuilder.toString());
+	    }
+
+	    return resultList;
+	}
+	 
 	@Override
 	public List<Allanswer> getAllanswerList(int sIdx) {
 		List<Answer> answer = surveymapper.selectAnswerList(sIdx);
@@ -164,7 +218,7 @@ public class SurveyServiceImpl implements SurveyService {
 		}
 		
 		return groupresponseList;
-	}
+	}*/
 	
 	@Override
 	public void getallanswer(Allanswer allanswer) {
@@ -192,26 +246,6 @@ public class SurveyServiceImpl implements SurveyService {
 		}
 		
 		return groupresponseList;
-	}
-	
-	@Override
-	public Map<String, List<Answer>> groupAnswersByQIds(int sId) {
-		List<Answer> answersList = surveymapper.selectAnswerList(sId);
-	    Map<String, List<Answer>> groupedAnswers = new HashMap<>();
-	    
-	    for (Answer answer : answersList) {
-	        int qId = answer.getqIdx();
-	        Map<String, Object> answerMap = new HashMap<>();
-	        answerMap.put("aAnswer", answer.getaAnswer());
-	        answerMap.put("count", answer.getCount());
-
-	        Answer groupedAnswer = createAnswersFromMap(answerMap);
-
-	        if (groupedAnswers.containsKey(qId)) {
-	            groupedAnswers.get(qId).add(groupedAnswer);
-	        } 
-	    }
-	    return groupedAnswers;
 	}
 	
 	private Answer createAnswersFromMap(Map<String, Object> answerMap) {
