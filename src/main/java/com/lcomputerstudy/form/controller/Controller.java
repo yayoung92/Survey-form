@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lcomputerstudy.form.domain.User;
 import com.lcomputerstudy.form.domain.Allanswer;
@@ -129,6 +130,7 @@ public class Controller {
 	}
 	
 	//설문조사 통계
+//	@ResponseBody
 	@RequestMapping("/showchart")
 	public String showchart(@RequestParam("sIdx") int sIdx, Model model) {
 		Survey survey = surveyservice.viewSurvey(sIdx);
@@ -137,20 +139,29 @@ public class Controller {
 		model.addAttribute("survey", survey);
 		model.addAttribute("question", question);
 		
-		List<Options> s = surveyservice.selectAnswerList(sIdx);
+		List<Options> s = surveyservice.selectOptionList(sIdx);
 		System.out.println("s:" + s);
 		model.addAttribute("s", s);
 		
+		List<Answer> a = surveyservice.selectAnswerListss(sIdx);
+		System.out.println("a:" + a);
+		model.addAttribute("a", a);
+		
+		List<Map<String, Object>> aa = surveyservice.gro(sIdx);
+		System.out.println("aa:" + aa);
+		model.addAttribute("aa", aa);
 		return "/showchart";
 	}
 	
 	// pie chart 보여주기
+	@ResponseBody
 	@RequestMapping("/aj-chart")
-    public String showChart(@RequestBody Question question, Model model) {
-		int qId = question.getqIdx();
+    public List<Map<String, Object>> showChart(@RequestBody Question question, Model model) {
+		int sIdx = question.getsIdx();
 		
-		
-        return "/showchart";
+		List<Map<String, Object>> aa = surveyservice.gro(sIdx);
+		System.out.println("aa:" + aa);
+        return aa;
     }
 
 	

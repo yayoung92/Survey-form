@@ -43,33 +43,39 @@
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
-	console.log(${s});
+console.log('${aa}');
+
+ajax({}).done(function () {})
+
+$.ajax({
+	method: "POST",
+	url: "aj-chart",
+	contentType: "application/json",
+	data: JSON.stringify({ })
+})
+.done(function(data){
+	console.log(data);
+	//drawChart(data);
+	
+});
+
+
+function drawChart(answers) {
+	
 	
     var data = google.visualization.arrayToDataTable([
     	['oOption', 'count'],
-        ['ww', 5]
+        [aAnswer, 5]
       ]);
 
     var options = {
-      title: 'My Daily Activities'
+      title: 'sss'
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     chart.draw(data, options);
 }
 
-
-$.ajax({
-	method: "POST",
-	url: "aj-chart",
-	contentType: "application/json",
-	data: JSON.stringify({"sIdx":sId, "qIdx":qId})
-
-})
-.done(function(msg){
-	$('#piechart').html(msg);
-});
 </script>	
 </body>
 </html>

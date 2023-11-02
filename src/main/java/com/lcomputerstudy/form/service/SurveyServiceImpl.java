@@ -145,10 +145,16 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 	
 	@Override
-	public List<Options> selectAnswerList(int sIdx) {
+	public List<Options> selectOptionList(int sIdx) {
+		return surveymapper.selectOptionList(sIdx);
+	}
+	
+	@Override
+	public List<Answer> selectAnswerList(int sIdx) {
 		return surveymapper.selectAnswerList(sIdx);
 	}
-/*	@Override
+	
+	@Override
 	public List<Answer> selectAnswerListss(int sIdx) {
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		Object[] rowData = null;
@@ -166,6 +172,48 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 	
 	@Override
+	public List<Map<String, Object>> gro(int sIdx) {
+	    List<Answer> answersList = surveymapper.selectAnswerList(sIdx);
+	    List<Map<String, Object>> result = new ArrayList<>();
+
+	    for (Answer answer : answersList) {        
+	    		
+	        List<Object> answerMap = new ArrayList<>();
+	        answerMap.add(answer.getaAnswer());
+	        answerMap.add(answer.getCount());
+
+	        boolean questionExists = false;
+	        for (Map<String, Object> questionMap : result) {
+	            if (questionMap.get("question").equals(answer.getqQuestion())) {
+	            	List<List<Object>> answers = (List<List<Object>>) questionMap.get("answers");
+	                List<Object> answerData = new ArrayList<>();
+	                answerData.add(answer.getaAnswer());
+	                answerData.add(answer.getCount());
+	                answers.add(answerData);
+	                questionExists = true;
+	                break;
+	            }
+	        }
+
+	        if (!questionExists) {
+	            Map<String, Object> questionMap = new HashMap<>();
+	            questionMap.put("qIdx", answer.getqIdx());
+	            questionMap.put("question", answer.getqQuestion());
+	            
+	            List<List<Object>> anwers = new ArrayList<>();
+	            List<Object> answerList = new ArrayList<>();
+	            answerList.add(answer.getaAnswer());
+	            answerList.add(answer.getCount());
+	            anwers.add(answerList);
+	            questionMap.put("answers", anwers);
+	            result.add(questionMap);
+	        }
+	    }
+
+	    return result;
+	}
+	
+/*	@Override
 	public List<String> selectAnswerListz(int sId) {
 	    List<Answer> groupedData = surveymapper.selectAnswerList(sId);
 	    Map<Integer, StringBuilder> groupedMap = new HashMap<>();

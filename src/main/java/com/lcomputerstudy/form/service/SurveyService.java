@@ -43,9 +43,11 @@ public interface SurveyService {
 	
 	public void updateoId(Answer answer);
 
-	public List<Options> selectAnswerList(int sIdx);
+	public List<Options> selectOptionList(int sIdx);
 	
-//	public List<Answer> selectAnswerListss(int sIdx);
+	public List<Answer> selectAnswerList(int sIdx);
+	
+	public List<Answer> selectAnswerListss(int sIdx);
 	
 	public List<ResponseVO> selectAnswerLists(int sIdx);
 	
@@ -58,6 +60,8 @@ public interface SurveyService {
 	public void updateQuestion(Question question);
 	
 	public void updateOption(Options options);
+	
+	public List<Map<String, Object>> gro(int sIdx);
 	
 //	public List<String> selectAnswerListz(int qId);
 }

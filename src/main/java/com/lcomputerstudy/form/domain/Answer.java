@@ -9,6 +9,7 @@ public class Answer {
 	private int oIdx;
 	private int count;
 	private String aAnswer;
+	private String qQuestion;
 	
 	public int getoIdx() {
 		return oIdx;
@@ -46,9 +47,15 @@ public class Answer {
 	public void setaAnswer(String aAnswer) {
 		this.aAnswer = aAnswer;
 	}
+	public String getqQuestion() {
+		return qQuestion;
+	}
+	public void setqQuestion(String qQuestion) {
+		this.qQuestion = qQuestion;
+	}
 	@Override
 	public String toString() {
-		return "[" + "aAnswer= " + "\"" + aAnswer + "\"" + ", count= " + count +", qIdx=" + qIdx + "]";
+		return "[" + "qQuestion=" + "\"" + qQuestion + "\"" + ", aAnswer= " + "\"" + aAnswer + "\"" + ", count= " + count +", qIdx=" + qIdx + "]";
 	}
 
 }
