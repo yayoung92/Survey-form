@@ -1,12 +1,24 @@
 package com.lcomputerstudy.form.domain;
 
+import java.util.List;
+
 public class Options {
 	private int oIdx;		
 	private int qIdx;		//객관식 type 번호
 	private String oOption;	//객관식 질문
 	private int sIdx;
 	private int count;
+	private List<String> oOptions;
 	
+	public List<String> getoOptions() {
+		return oOptions;
+	}
+	public void setoOptions(List<String> oOptions) {
+		this.oOptions = oOptions;
+	}
+	public Options() {
+		
+	}
 	public Options(String oOption) {
 		this.oOption = oOption;
 	}
@@ -42,8 +54,9 @@ public class Options {
 	}
 	@Override
 	public String toString() {
-		return "[qIdx=" + qIdx + ", oOption=" + "\"" + oOption + "\"" + ", sIdx=" + sIdx + ", count="
-				+ count + "]";
+		return "Options [oIdx=" + oIdx + ", qIdx=" + qIdx + ", oOption=" + oOption + ", sIdx=" + sIdx + ", count="
+				+ count + ", oOptions=" + oOptions + "]";
 	}
+	
 	
 }

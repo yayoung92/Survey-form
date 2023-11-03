@@ -8,6 +8,7 @@ public class Question {
 	private String qQuestion;
 	private int sIdx;
 	private List<Options> oOption;
+	private int oIdx;
 
 	public List<Options> getoOption() {
 		return oOption;
@@ -39,10 +40,17 @@ public class Question {
 	public void setsIdx(int sIdx) {
 		this.sIdx = sIdx;
 	}
+	public int getoIdx() {
+		return oIdx;
+	}
+	public void setoIdx(int oIdx) {
+		this.oIdx = oIdx;
+	}
 	@Override
 	public String toString() {
 		return "Question [qIdx=" + qIdx + ", qType=" + qType + ", qQuestion=" + qQuestion + ", sIdx=" + sIdx
-				+ ", oOption=" + oOption + "]";
+				+ ", oOption=" + oOption + ", oIdx=" + oIdx + "]";
 	}
+	
 	
 }

@@ -100,11 +100,12 @@
 						<c:when test="${question.qType eq 2 }">	 
 							<div class="optionlist">
 							    <c:forEach items="${option}" var="option">
-							    	<c:choose>
-							        	<c:when test="${question.qIdx eq option.qIdx}">	
-							        		<input type="hidden" name="qQueation" value="${question.qQuestion }">
+							    			<input type="hidden" name="qQueation" value="${question.qQuestion }">
 							                <input type="hidden" name="qIdx" value="${option.qIdx}">
 							                <input type="hidden" name="oIdx" value="${option.oIdx}">
+							    	<c:choose>
+							        	<c:when test="${question.qIdx eq option.qIdx}">	
+							        		
 								            <input type='checkbox'><input type="text" name="oOption" value="${option.oOption}"><br>
 								        </c:when>
 								    </c:choose>
@@ -117,7 +118,9 @@
 		</c:forEach>
 	</div>
 	<div class="button-container">
-		<a id="update_survey" class="custom-button" type="button" href="/surveylist">설문지 수정하기</a>
+		<div id=update_survey>
+		<input type="submit" value="설문지 수정하기">
+		</div>
 	</div>
 <a href="/surveylist" type="button">돌아가기</a>
 <script>
@@ -205,24 +208,28 @@ $(document).on('click', '#update_survey', function () {
         let q_idx = $(this).find('input[name="qIdx"]').val();
         let q_question = $(this).find('input[name="qQuestion"]').val();
         let q_type = $(this).find('input[name="qType"]').val();
+        let o_idx = $(this).find('input[name="oIdx"]').val();
+
+		let o_option = [];
         
         
-        let o_option = [];
-		
-        if(q_type === '2') {
+        
+        $('.optionlist').each(function() {
         	$(this).find('input[name="oOption"]').each(function () {
         		o_option.push($(this).val());
             });
-        }
+
+        });   
         
         questions.push({
             qIdx: q_idx,
             qQuestion: q_question,
             qType: Number(q_type),
-            oOption: o_option    
+            oIdx: o_idx,
+            oOption: o_option
+            
         });
-        
-
+ 
     });
     
     $.ajax({
@@ -235,11 +242,8 @@ $(document).on('click', '#update_survey', function () {
     	data: JSON.stringify({"sIdx":sId, "sTitle":sTitle, "qQuestionslist": questions})
 
     })
-    .done(function(msg){
-		$('.wrap').html(msg);
-    });
 
-    console.log(questions)
+    console.log(questions);
 });
 </script>
 </body>

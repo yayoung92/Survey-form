@@ -26,7 +26,7 @@
 				<c:choose>
 					<c:when test="${question.qType eq 2 }">
 						
-						<div id="piechart" style="width: 900px; height: 500px; text-align: center;">
+						<div id="piechart${question.qIdx }" style="width: 900px; height: 500px; text-align: center;">
 							<input type="hidden" name="qQuestion" value="${question.qQuestion }">
 							<input type="hidden" name="qIdx" value="${question.qIdx }">
 						</div>
@@ -41,39 +41,50 @@
 <a href="/surveylist" type="button">돌아가기</a>
 <script>
 google.charts.load('current', {'packages': ['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+google.charts.setOnLoadCallback(function(data) {
+	(drawChart);
+});
 
-console.log('${aa}');
 
-ajax({}).done(function () {})
+let csrfToken = $("meta[name='_csrf']").attr("content");
+let sId = $('input[name="sIdx"]').val();
 
 $.ajax({
 	method: "POST",
 	url: "aj-chart",
+	headers: {
+		"X-CSRF-TOKEN": csrfToken
+	},
 	contentType: "application/json",
-	data: JSON.stringify({ })
+	data: JSON.stringify({ "sIdx": sId})
 })
 .done(function(data){
-	console.log(data);
-	//drawChart(data);
+	drawChart(data);
 	
 });
 
 
-function drawChart(answers) {
+function drawChart(chartData) {
 	
-	
-    var data = google.visualization.arrayToDataTable([
-    	['oOption', 'count'],
-        [aAnswer, 5]
-      ]);
+	chartData.forEach(function(item){
 
-    var options = {
-      title: 'sss'
-    };
+		var data = new google.visualization.DataTable();
+	    data.addColumn('string', 'aAnswer');
+	    data.addColumn('number', 'count');
 
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-    chart.draw(data, options);
+		item.answers.forEach(function(ans){
+			data.addRow( [ans[0], ans[1]]);
+		})
+		
+		var options = {
+			title: item.question
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('piechart' + item.qIdx));
+		chart.draw(data, options);
+		
+	});
+  
 }
 
 </script>	

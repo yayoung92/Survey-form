@@ -50,8 +50,6 @@ public interface SurveyMapper {
 	
 	public List<Answer> selectAnswerList(int sIdx);
 	
-	public List<ResponseVO> selectAnswerLists(int sIdx);
-	
 	public List<Allanswer> getAllanswerList(int sIdx);
 	
 	public void updateSurvey(Survey survey);

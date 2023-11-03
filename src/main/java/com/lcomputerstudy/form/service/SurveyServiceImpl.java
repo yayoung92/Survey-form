@@ -155,23 +155,6 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 	
 	@Override
-	public List<Answer> selectAnswerListss(int sIdx) {
-		List<Map<String, Object>> resultList = new ArrayList<>();
-		Object[] rowData = null;
-		
-	    List<Answer> groupedData = surveymapper.selectAnswerList(sIdx);
-
-	    for(int i = 1; i<resultList.size(); i++) {
-	    	Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("aAnswer", rowData[i]);
-	        resultMap.put("count", rowData[i]);
-	        resultList.add(resultMap);
-	    }
-
-	    return groupedData;
-	}
-	
-	@Override
 	public List<Map<String, Object>> gro(int sIdx) {
 	    List<Answer> answersList = surveymapper.selectAnswerList(sIdx);
 	    List<Map<String, Object>> result = new ArrayList<>();
@@ -213,96 +196,6 @@ public class SurveyServiceImpl implements SurveyService {
 	    return result;
 	}
 	
-/*	@Override
-	public List<String> selectAnswerListz(int sId) {
-	    List<Answer> groupedData = surveymapper.selectAnswerList(sId);
-	    Map<Integer, StringBuilder> groupedMap = new HashMap<>();
-
-	    for (Answer answer : groupedData) {
-	        int qIdx = answer.getqIdx();
-	        StringBuilder resultString = new StringBuilder();
-	        resultString.append("[aAnswer=\"")
-	                    .append(answer.getaAnswer())
-	                    .append("\", count=")
-	                    .append(answer.getCount())
-	                    .append(", qIdx=")
-	                    .append(qIdx)
-	                    .append("]");
-
-	        if (groupedMap.containsKey(qIdx)) {
-	            groupedMap.get(qIdx).append(", ")
-	                              .append("[aAnswer=\"")
-	                              .append(answer.getaAnswer())
-	                              .append("\", count=")
-	                              .append(answer.getCount())
-	                              .append(", qIdx=")
-	                              .append(qIdx)
-	                              .append("]");
-	        } else {
-	            groupedMap.put(qIdx, resultString);
-	        }
-	    }
-
-	    List<String> resultList = new ArrayList<>();
-	    for (StringBuilder stringBuilder : groupedMap.values()) {
-	        resultList.add(stringBuilder.toString());
-	    }
-
-	    return resultList;
-	}
-	 
-	@Override
-	public List<Allanswer> getAllanswerList(int sIdx) {
-		List<Answer> answer = surveymapper.selectAnswerList(sIdx);
-		Map<String, List<Answer>> group = new HashMap<>();
-		
-		List<Allanswer> groupresponseList = new ArrayList<>();
-		
-		for(Map.Entry<String, List<Answer>> entry: group.entrySet()) {
-			Allanswer grouped = new Allanswer();
-			grouped.setqQuestion(entry.getKey());
-			grouped.setaAnswerlist(entry.getValue());
-			groupresponseList.add(grouped);
-		}
-		
-		return groupresponseList;
-	}*/
-	
-	@Override
-	public void getallanswer(Allanswer allanswer) {
-		int sIdx = allanswer.getsIdx();
-		surveymapper.getAllanswerList(sIdx);
-	}
-	
-	@Override
-	public List<ResponseVO> selectAnswerLists(int sIdx) {
-		List<Allanswer> allanswer = surveymapper.getAllanswerList(sIdx);
-		Map<String, List<Allanswer>> group = new HashMap<>();
-		
-		for(Allanswer a : allanswer) {
-			String qQuestion = a.getqQuestion();	
-			group.computeIfAbsent(qQuestion, k -> new ArrayList<>()).add(a);
-		}
-		
-		List<ResponseVO> groupresponseList = new ArrayList<>();
-		
-		for(Map.Entry<String, List<Allanswer>> entry: group.entrySet()) {
-			ResponseVO grouped = new ResponseVO();
-			grouped.setqQuestion(entry.getKey());
-			grouped.setaAnswers(entry.getValue());
-			groupresponseList.add(grouped);
-		}
-		
-		return groupresponseList;
-	}
-	
-	private Answer createAnswersFromMap(Map<String, Object> answerMap) {
-	    Answer answers = new Answer();
-	    answers.setaAnswer((String) answerMap.get("aAnswer"));
-	    answers.setCount((int) answerMap.get("count"));
-	    return answers;
-	}
-	
 	@Override
 	public void updateSurvey(Survey survey) {
 		surveymapper.updateSurvey(survey);
@@ -313,9 +206,12 @@ public class SurveyServiceImpl implements SurveyService {
 			
 			if(question.getqType() ==2) {
 				int qId = question.getqIdx();
+				int oId = question.getoIdx();
+				
 				for(Options options : question.getoOption()) {
 					options.setsIdx(sId);
 					options.setqIdx(qId);
+					options.setoIdx(oId);
 					surveymapper.updateOption(options);
 				}
 			}

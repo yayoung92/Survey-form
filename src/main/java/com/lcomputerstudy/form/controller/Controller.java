@@ -130,7 +130,6 @@ public class Controller {
 	}
 	
 	//설문조사 통계
-//	@ResponseBody
 	@RequestMapping("/showchart")
 	public String showchart(@RequestParam("sIdx") int sIdx, Model model) {
 		Survey survey = surveyservice.viewSurvey(sIdx);
@@ -138,18 +137,6 @@ public class Controller {
 		
 		model.addAttribute("survey", survey);
 		model.addAttribute("question", question);
-		
-		List<Options> s = surveyservice.selectOptionList(sIdx);
-		System.out.println("s:" + s);
-		model.addAttribute("s", s);
-		
-		List<Answer> a = surveyservice.selectAnswerListss(sIdx);
-		System.out.println("a:" + a);
-		model.addAttribute("a", a);
-		
-		List<Map<String, Object>> aa = surveyservice.gro(sIdx);
-		System.out.println("aa:" + aa);
-		model.addAttribute("aa", aa);
 		return "/showchart";
 	}
 	
@@ -164,9 +151,6 @@ public class Controller {
         return aa;
     }
 
-	
-	
-	
 	//설문지 수정
 	@RequestMapping("/surveyupdate")
 	public String viewUpdate(@RequestParam("sIdx") int sIdx, Model model) {
@@ -182,9 +166,13 @@ public class Controller {
 	//설문지 수정 값 보내기
 	@RequestMapping("/aj-updatesurvey")
 	public String surveyUpdate(@RequestBody Survey survey, Model model) {
+		System.out.println(survey.toString());
 		surveyservice.updateSurvey(survey);
-		return "s_resultSurvey";
+		return "/s_surveylist";
 	}
+	
+	
+	
 	
 	
 	

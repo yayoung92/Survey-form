@@ -63,7 +63,7 @@
 			<input type="text" placeholder="설문지 설명" class="sur" name="survey">
 			<hr class="my-4">
 			<p class="lead">
-			<button type="button" class=질문 시작하기</button>
+			<button type="button" class="addQuestion">질문 시작하기</button>
 		</div>
 	</div>
 	<div class="button-container">
