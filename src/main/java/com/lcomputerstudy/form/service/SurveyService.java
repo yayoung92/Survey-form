@@ -7,7 +7,6 @@ import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
-import com.lcomputerstudy.form.domain.ResponseVO;
 import com.lcomputerstudy.form.domain.Survey;
 
 public interface SurveyService {
@@ -54,5 +53,11 @@ public interface SurveyService {
 	public void updateOption(Options options);
 	
 	public List<Map<String, Object>> gro(int sIdx);
+	
+	public void deleteSurvey(int sIdx);
+	
+	public void deleteQuestion(int sIdx);
+	
+	public void deleteOption(int sIdx);
 	
 }

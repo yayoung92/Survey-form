@@ -98,19 +98,22 @@
 					</c:choose>
 					<c:choose>
 						<c:when test="${question.qType eq 2 }">	 
-							<div class="optionlist">
+							
 							    <c:forEach items="${option}" var="option">
-							    			<input type="hidden" name="qQueation" value="${question.qQuestion }">
-							                <input type="hidden" name="qIdx" value="${option.qIdx}">
-							                <input type="hidden" name="oIdx" value="${option.oIdx}">
+							    			
 							    	<c:choose>
 							        	<c:when test="${question.qIdx eq option.qIdx}">	
-							        		
+							        		<input type="hidden" name="qQueation" value="${question.qQuestion }">
+							                <input type="hidden" name="qIdxs" value="${option.qIdx}">
+							              
+							                <div class="optionlist">
+							                <input type="hidden" name="oIdx" value="${option.oIdx}">
 								            <input type='checkbox'><input type="text" name="oOption" value="${option.oOption}"><br>
+								            </div>
 								        </c:when>
 								    </c:choose>
 								</c:forEach>
-							</div>
+							
 						</c:when>
 					</c:choose>
 				</div>
@@ -119,7 +122,7 @@
 	</div>
 	<div class="button-container">
 		<div id=update_survey>
-		<input type="submit" value="설문지 수정하기">
+			<a class="custom-button" href="form-view" role="button">설문지 수정하기</a>
 		</div>
 	</div>
 <a href="/surveylist" type="button">돌아가기</a>
@@ -208,42 +211,49 @@ $(document).on('click', '#update_survey', function () {
         let q_idx = $(this).find('input[name="qIdx"]').val();
         let q_question = $(this).find('input[name="qQuestion"]').val();
         let q_type = $(this).find('input[name="qType"]').val();
-        let o_idx = $(this).find('input[name="oIdx"]').val();
-
-		let o_option = [];
         
-        
-        
-        $('.optionlist').each(function() {
-        	$(this).find('input[name="oOption"]').each(function () {
-        		o_option.push($(this).val());
-            });
-
-        });   
-        
+        let qIds = $(this).find('input[name="qIdxs"]').val();
+   
         questions.push({
-            qIdx: q_idx,
-            qQuestion: q_question,
-            qType: Number(q_type),
-            oIdx: o_idx,
-            oOption: o_option
-            
+               qIdx: q_idx,
+                qQuestion: q_question,
+                qType: Number(q_type)
         });
- 
+
     });
-    
+	
+    $('.optionlist').each(function() {
+
+    	$(this).find('input[name="oIdx"]').each(function () {
+			o_idx = $(this).val();
+        });
+
+    	$(this).find('input[name="oOption"]').each(function () {
+        	oOption = $(this).val();
+    	});
+
+		options.push({
+			oIdx: o_idx,
+			oOption: oOption
+
+			});
+
+    });
+        
     $.ajax({
 		method: "POST",
-		url: "aj-updatesurvey",
+		url: "/aj-updatesurvey",
 		headers: {
     		"X-CSRF-TOKEN": csrfToken
     	},
     	contentType: "application/json",
-    	data: JSON.stringify({"sIdx":sId, "sTitle":sTitle, "qQuestionslist": questions})
+    	data: JSON.stringify({"sIdx":sId, "sTitle":sTitle, "qQuestionslist": questions, "oOptionslist":options}),
 
     })
-
-    console.log(questions);
+    .done(function(msg){
+		$('#s_survey').html(msg);
+    });
+    
 });
 </script>
 </body>

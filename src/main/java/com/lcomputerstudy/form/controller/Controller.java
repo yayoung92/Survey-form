@@ -24,7 +24,6 @@ import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
-import com.lcomputerstudy.form.domain.ResponseVO;
 import com.lcomputerstudy.form.domain.Survey;
 import com.lcomputerstudy.form.service.SurveyService;
 import com.lcomputerstudy.form.service.UserService;
@@ -107,7 +106,6 @@ public class Controller {
 		model.addAttribute("question", question);
 		model.addAttribute("option", option);
 		
-		
 		return "/resultSurvey";
 	}
 	
@@ -169,6 +167,15 @@ public class Controller {
 		System.out.println(survey.toString());
 		surveyservice.updateSurvey(survey);
 		return "/s_surveylist";
+	}
+	
+	//설문지 삭제하기
+	@RequestMapping("/surveydelete")
+	public String deleteSurvey(@RequestParam("sIdx") int sIdx, Model model) {
+		surveyservice.deleteSurvey(sIdx);
+		surveyservice.deleteQuestion(sIdx);
+		surveyservice.deleteOption(sIdx);
+		return "/delete";
 	}
 	
 	

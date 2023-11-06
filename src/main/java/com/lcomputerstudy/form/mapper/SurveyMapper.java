@@ -9,7 +9,6 @@ import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
-import com.lcomputerstudy.form.domain.ResponseVO;
 import com.lcomputerstudy.form.domain.Survey;
 
 @Mapper
@@ -57,5 +56,11 @@ public interface SurveyMapper {
 	public void updateQuestion(Question question);
 	
 	public void updateOption(Options options);
+	
+	public void deleteSurvey(int sIdx);
+	
+	public void deleteQuestion(int sIdx);
+	
+	public void deleteOption(int sIdx);
 	
 }

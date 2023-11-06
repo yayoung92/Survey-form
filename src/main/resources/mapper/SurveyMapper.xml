@@ -207,7 +207,25 @@
 	<update id="updateOption" parameterType="Options">
 		UPDATE	y_option
 		SET		o_option = #{oOption}
-		WHERE	s_idx = #{sIdx} and q_idx = #{qIdx} and o_idx = #{oIdx}
+		WHERE	s_idx = #{sIdx} and o_idx = #{oIdx}
 	</update>
+	
+	<delete id="deleteSurvey" parameterType="Integer">
+		DELETE
+		FROM	y_survey
+		WHERE	s_idx = #{sIdx}
+	</delete>
+	
+	<delete id="deleteQuestion" parameterType="Integer">
+		DELETE
+		FROM	y_question
+		WHERE	s_idx = #{sIdx}
+	</delete>
+	
+	<delete id="deleteOption" parameterType="Integer">
+		DELETE
+		FROM	y_option
+		WHERE	s_idx = #{sIdx}
+	</delete>
 </mapper>
 

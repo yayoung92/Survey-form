@@ -183,7 +183,7 @@ $(document).on('click', '#btn_survey', function () {
 		}),
 	})
 	.done(function(msg){
-		$('#s_surveylist').html(msg);
+		$('#s_survey').html(msg);
 	});
 
     console.log(title, questions)

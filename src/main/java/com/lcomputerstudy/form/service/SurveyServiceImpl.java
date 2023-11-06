@@ -12,7 +12,6 @@ import com.lcomputerstudy.form.domain.Allanswer;
 import com.lcomputerstudy.form.domain.Answer;
 import com.lcomputerstudy.form.domain.Options;
 import com.lcomputerstudy.form.domain.Question;
-import com.lcomputerstudy.form.domain.ResponseVO;
 import com.lcomputerstudy.form.domain.Survey;
 import com.lcomputerstudy.form.mapper.SurveyMapper;
 
@@ -200,21 +199,15 @@ public class SurveyServiceImpl implements SurveyService {
 	public void updateSurvey(Survey survey) {
 		surveymapper.updateSurvey(survey);
 		int sId = survey.getsIdx();
+		
 		for(Question question : survey.getqQuestionslist()) {
 			question.setsIdx(sId);
-			surveymapper.updateQuestion(question);
-			
-			if(question.getqType() ==2) {
-				int qId = question.getqIdx();
-				int oId = question.getoIdx();
-				
-				for(Options options : question.getoOption()) {
-					options.setsIdx(sId);
-					options.setqIdx(qId);
-					options.setoIdx(oId);
-					surveymapper.updateOption(options);
-				}
-			}
+			surveymapper.updateQuestion(question);	
+		}
+		
+		for(Options options : survey.getoOptionslist()) {
+			options.setsIdx(sId);
+			surveymapper.updateOption(options);
 		}
 	}
 	
@@ -226,5 +219,20 @@ public class SurveyServiceImpl implements SurveyService {
 	@Override
 	public void updateOption(Options options) {
 		surveymapper.updateOption(options);
+	}
+	
+	@Override
+	public void deleteSurvey(int sIdx) {
+		surveymapper.deleteSurvey(sIdx);
+	}
+	
+	@Override
+	public void deleteQuestion(int sIdx) {
+		surveymapper.deleteQuestion(sIdx);
+	}
+	
+	@Override
+	public void deleteOption(int sIdx) {
+		surveymapper.deleteOption(sIdx);
 	}
 }

@@ -65,6 +65,7 @@
 	
 </style>
 <body>
+<div id="s_surveylist">
 	<h1>설문지 목록</h1>
       <table style="text-align:center;">
       	<col width="50px">
@@ -90,6 +91,6 @@
     <div class="button-container">
     	<a class="custom-button" href="form-view" role="button">설문지 만들기</a>
     </div>
-	
+</div>	
 </body>
 </html>

@@ -120,7 +120,9 @@
 	</div>
 <a href="/surveylist" type="button">돌아가기</a>
 <a href="/surveyupdate?sIdx=${survey.sIdx }" type="button">수정하기</a>
+<a href="/surveydelete?sIdx=${survey.sIdx }" type="button">삭제하기</a>
 <script>
+
 $(document).on('click', '#b_survey', function () {
     let sTitle = $(this).parent().prev().find('input[name="sTitle"]').val();
     let sId = $(this).parent().prev().find('input[name="sIdx"]').val();
@@ -150,7 +152,7 @@ $(document).on('click', '#b_survey', function () {
 
     })
     .done(function(msg){
-		$('#s_surveylist').html(msg);
+		$('#s_survey').html(msg);
     });
 
     console.log(sId, check)

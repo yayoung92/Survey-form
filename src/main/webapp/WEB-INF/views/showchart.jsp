@@ -49,21 +49,6 @@ google.charts.setOnLoadCallback(function(data) {
 let csrfToken = $("meta[name='_csrf']").attr("content");
 let sId = $('input[name="sIdx"]').val();
 
-$.ajax({
-	method: "POST",
-	url: "aj-chart",
-	headers: {
-		"X-CSRF-TOKEN": csrfToken
-	},
-	contentType: "application/json",
-	data: JSON.stringify({ "sIdx": sId})
-})
-.done(function(data){
-	drawChart(data);
-	
-});
-
-
 function drawChart(chartData) {
 	
 	chartData.forEach(function(item){
@@ -86,6 +71,20 @@ function drawChart(chartData) {
 	});
   
 }
+
+$.ajax({
+	method: "POST",
+	url: "aj-chart",
+	headers: {
+		"X-CSRF-TOKEN": csrfToken
+	},
+	contentType: "application/json",
+	data: JSON.stringify({ "sIdx": sId})
+})
+.done(function(data){
+	drawChart(data);
+	
+});
 
 </script>	
 </body>

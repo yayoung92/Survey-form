@@ -3,7 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
- <div id="s_surveylist">
+
+ <div id="s_survey">
 	<h1>설문지 목록</h1>
       <table style="text-align:center;">
       	<col width="50px">
