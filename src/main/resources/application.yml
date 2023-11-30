@@ -15,7 +15,7 @@ spring:
    suffix: ".jsp"
     
  datasource:
-    url: jdbc:mysql://localhost:localhost/form?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:localhost/?characterEncoding=UTF-8&serverTimezone=UTC
     username: username
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
